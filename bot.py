@@ -3,6 +3,7 @@
 import time
 import random
 import string
+import sys, getopt
 
 from fbchat import log, Client
 from fbchat.models import *
@@ -11,11 +12,12 @@ from os import system
 from utils import *
 from get_response import get_text_from_db
 from pymongo import MongoClient
+from gtts import gTTS
 
 
 
 class StressBot(Client):
-	def __init__(self, email, password, reply_dict, mongo_collection):
+	def __init__(self, email, password, reply_dict, mongo_collection, voice_choice):
 		Client.__init__(self, email, password)
 		self.user_history = defaultdict(list)
 		# self.user_history {thread_id: [[(bot_id, in_group_id, ab_test_id, msg, user_response_time), () ....], [], [], ...]}
@@ -29,6 +31,12 @@ class StressBot(Client):
 		self.topics = Topics()
 
 		self.collection = mongo_collection
+		self.voice_choice = voice_choice
+
+	def say(self, text):
+		tts = gTTS(text=text, lang='en')
+		tts.save("test.mp3")
+		system("mpg321 test.mp3")
 
 	def clean_last_record(self, thread_id):
 		if thread_id in self.user_history and len(self.user_history[thread_id]) > 0:
@@ -60,7 +68,9 @@ class StressBot(Client):
 			if not chcek_rubbish_word(msg):
 				reply_text = "Sorry I cannot understand your word. Could you repeat it again?"
 				self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
-				# system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
+				if self.voice_choice:
+					#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
+					self.say(reply_text.replace("(", " ").replace(")", " "))
 				time.sleep(self.params.SLEEPING_TIME)
 				return None
 
@@ -156,7 +166,9 @@ class StressBot(Client):
 			for each in next_texts[ab_test_index]:
 				reply_text = each.format(name=user_name, problem=problem, bot_name=self.params.bot_name_list[bot_id])
 				self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
-				#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
+				if self.voice_choice:
+					#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
+					self.say(reply_text.replace("(", " ").replace(")", " "))
 				time.sleep(self.params.SLEEPING_TIME)
 
 			if next_id == self.config.CLOSING_INDEX:
@@ -175,6 +187,20 @@ class StressBot(Client):
 
 
 if __name__ == "__main__":
+	usage_tips = 'python bot.py --voice'
+	try:
+		opts, args = getopt.getopt(sys.argv[1:],'',["voice"])
+	except getopt.GetoptError:
+		print usage_tips
+		sys.exit()
+
+	voice_choice = False
+	for opt, arg in opts:
+		if opt == '--voice':
+			voice_choice = True
+		else:
+			print usage_tips
+			sys.exit()
 
 	pymongo_client = MongoClient()
 	db = pymongo_client.chatbot
@@ -183,5 +209,5 @@ if __name__ == "__main__":
 	reply_dict = get_text_from_db()
 	email = "stressbotcommuter@gmail.com"
 	password = "stressbot@commuter"
-	client = StressBot(email, password, reply_dict, collection)
+	client = StressBot(email, password, reply_dict, collection, voice_choice)
 	client.listen()
