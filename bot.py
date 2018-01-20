@@ -17,7 +17,7 @@ from gtts import gTTS
 
 
 class StressBot(Client):
-	def __init__(self, email, password, reply_dict, mongo_collection, voice_choice):
+	def __init__(self, email, password, reply_dict, mongo_collection, voice_choice=False):
 		Client.__init__(self, email, password)
 		self.user_history = defaultdict(list)
 		# self.user_history {thread_id: [[(bot_id, in_group_id, ab_test_id, msg, user_response_time), () ....], [], [], ...]}
@@ -63,15 +63,18 @@ class StressBot(Client):
 
 		if author_id != self.uid:
 
-			msg = message_object.text
+			msg = message_object.text.lower()
 			msg = ' '.join(msg.split()) # substitute multiple spaces into one
+			if msg[-1] in list(string.punctuation):
+				msg = msg[:-1]
 			if not chcek_rubbish_word(msg):
 				reply_text = "Sorry I cannot understand your word. Could you repeat it again?"
 				self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
 				if self.voice_choice:
 					#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
 					self.say(reply_text.replace("(", " ").replace(")", " "))
-				time.sleep(self.params.SLEEPING_TIME)
+				if not self.voice_choice:
+					time.sleep(self.params.SLEEPING_TIME)
 				return None
 
 			if msg.strip().lower() == 'restart':
@@ -111,8 +114,8 @@ class StressBot(Client):
 					if _index != -1:
 						result = msg.lower()[_index + len(each)+1:]
 						result = result.split()[0]
-						for each in list(string.punctuation):
-							result = result.replace(each,"")
+						for each_punc in list(string.punctuation):
+							result = result.replace(each_punc,"")
 						if len(result) > 0 and len(result) < 20:
 							self.user_name_dict[thread_id] = result
 
@@ -145,7 +148,7 @@ class StressBot(Client):
 							break
 				elif type(next_id[0][0]) == str:
 					for (key, val) in next_id:
-						print(msg, keyword_dict.get(key, [val]))
+						#print(msg, keyword_dict.get(key, [val]))
 					 	if decider_dict.get(key, find_keyword)(str(msg).lower(), keyword_dict.get(key, [key])):
 					 		next_id = val
 					 		break
@@ -162,14 +165,16 @@ class StressBot(Client):
 			next_texts = self.reply_dict[bot_id][next_id].texts.get(topic, self.reply_dict[bot_id][next_id].texts[self.topics.GENERAL])
 			ab_test_index = random.randint(0, len(next_texts)-1) if self.params.ABTEST_CHOICE == -1 else min(len(next_texts)-1, self.params.ABTEST_CHOICE)
 			self.user_history[thread_id][-1].append((bot_id, next_id, ab_test_index))
-			time.sleep(self.params.SLEEPING_TIME)
+			# if not self.voice_choice:
+			# 	time.sleep(self.params.SLEEPING_TIME)
 			for each in next_texts[ab_test_index]:
 				reply_text = each.format(name=user_name, problem=problem, bot_name=self.params.bot_name_list[bot_id])
 				self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
 				if self.voice_choice:
 					#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
 					self.say(reply_text.replace("(", " ").replace(")", " "))
-				time.sleep(self.params.SLEEPING_TIME)
+				else:
+					time.sleep(self.params.SLEEPING_TIME)
 
 			if next_id == self.config.CLOSING_INDEX:
 				self.user_history[thread_id][-1][-1] += ('END_OF_CONVERSATION', user_response_time,)

@@ -12,7 +12,7 @@ from collections import *
 class Params:
 	def __init__(self):
 		self.BOT_NUM = 3#3
-		self.SLEEPING_TIME = 1
+		self.SLEEPING_TIME = 2
 		self.ABTEST_CHOICE = -1 #   -1 random choice, > -1, the index of selected reply
 		self.BOT_CHOICE = 2 # -1 random, 0 worse case bot, 1 problem solving bot, 2 positive thining bot
 		self.bot_name_list = ['worst-case bot', 'problem-solving bot', 'positive-thinking bot']

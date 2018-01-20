@@ -10,7 +10,7 @@ def get_text_from_db():
 	config = Config()
 	topics = Topics()
 
-	openning = [["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "Can you tell me a little bit about a recent event that is stressing you out?"],
+	openning = [["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "Can you tell me a little bit about a recent event that makes you stressed?"],
 				["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "What’ stressing you out right now?"],
 				["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "What’s on your mind?"],
 				["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "Could you share something that’s on your mind?"]]
@@ -179,7 +179,7 @@ def get_text_from_db():
 	bot_texts[2][0] = Reply(bot_id=2, in_group_id=0, texts=tmp_text, next_id=1)
 	del tmp_text
 
-	bot_texts[2][1] = Reply(bot_id=2, in_group_id=1, texts={topics.GENERAL:[["I see how that can be stressful.", "I want you to take a couple minutes and write at least one positive aspect about your situation.", "Let me know when you are done."], ["Wow that really sucks, I’m sorry.", "Try this: Take a couple minutes to find at least one positive aspect in your situation.", "Let me know when you are done."]]}, next_id=[(config.DEFAULT_NO, 6), (config.DEFAULT_OTHERS, 2)])
+	bot_texts[2][1] = Reply(bot_id=2, in_group_id=1, texts={topics.GENERAL:[["I see how that can be stressful.", "I want you to take a couple minutes and think about least one positive aspect about your situation.", "Let me know when you are done."], ["Wow that really sucks, I’m sorry.", "Try this: Take a couple minutes to find at least one positive aspect in your situation.", "Let me know when you are done."]]}, next_id=[(config.DEFAULT_NO, 6), (config.DEFAULT_OTHERS, 2)])
 	bot_texts[2][2] = Reply(bot_id=2, in_group_id=2, texts={topics.GENERAL:[["Is there another positive you can find in your situation?"], ["Great!", "Do you think there is another positive you can find in your situation?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 3)])
 	bot_texts[2][3] = Reply(bot_id=2, in_group_id=3, texts={topics.GENERAL:[["See, you can usually find positives even when in the most negative of situations."], ["Awesome you’re a great positive thinker!!"]]}, next_id=5)
 	bot_texts[2][4] = Reply(bot_id=2, in_group_id=4, texts={topics.GENERAL:[["That’s ok at least you found one positive."], ["That’s alright you did find one positive."]]}, next_id=5)
