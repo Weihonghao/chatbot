@@ -17,7 +17,7 @@ from gtts import gTTS
 
 
 class StressBot(Client):
-	def __init__(self, email, password, reply_dict, mongo_collection, voice_choice=False):
+	def __init__(self, email, password, reply_dict, mongo_collection, voice_choice=False, **kwargs):
 		Client.__init__(self, email, password)
 		self.user_history = defaultdict(list)
 		# self.user_history {thread_id: [[(bot_id, in_group_id, ab_test_id, msg, user_response_time), () ....], [], [], ...]}
@@ -32,6 +32,14 @@ class StressBot(Client):
 
 		self.collection = mongo_collection
 		self.voice_choice = voice_choice
+
+		additional_bot_control = kwargs.get('add_bot_ctl',{})
+		if 'sleeping_time' in additional_bot_control:
+			self.params.set_sleeping_time(additional_bot_control.get('sleeping_time'))
+
+		if 'bot_choice' in additional_bot_control:
+			self.params.set_bot_choice(additional_bot_control.get('bot_choice'))
+
 
 	def say(self, text):
 		tts = gTTS(text=text, lang='en')
@@ -194,15 +202,20 @@ class StressBot(Client):
 if __name__ == "__main__":
 	usage_tips = 'python bot.py --voice'
 	try:
-		opts, args = getopt.getopt(sys.argv[1:],'',["voice"])
+		opts, args = getopt.getopt(sys.argv[1:],'',["voice", 'stime=', 'bot='])
 	except getopt.GetoptError:
 		print usage_tips
 		sys.exit()
 
 	voice_choice = False
+	add_bot_ctl = {}
 	for opt, arg in opts:
 		if opt == '--voice':
 			voice_choice = True
+		elif opt == '--stime':
+			add_bot_ctl['sleeping_time'] = int(arg)
+		elif opt == '--bot':
+			add_bot_ctl['bot_choice'] = int(arg)
 		else:
 			print usage_tips
 			sys.exit()
@@ -214,5 +227,5 @@ if __name__ == "__main__":
 	reply_dict = get_text_from_db()
 	email = "stressbotcommuter@gmail.com"
 	password = "stressbot@commuter"
-	client = StressBot(email, password, reply_dict, collection, voice_choice)
+	client = StressBot(email, password, reply_dict, collection, voice_choice, add_bot_ctl=add_bot_ctl)
 	client.listen()

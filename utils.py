@@ -10,12 +10,20 @@ from collections import *
 
 
 class Params:
-	def __init__(self):
-		self.BOT_NUM = 3#3
-		self.SLEEPING_TIME = 2
-		self.ABTEST_CHOICE = -1 #   -1 random choice, > -1, the index of selected reply
-		self.BOT_CHOICE = 2 # -1 random, 0 worse case bot, 1 problem solving bot, 2 positive thining bot
+	def __init__(self, bot_num=3, sleeping_time=2, abtest_choice=-1, bot_choice=-1):
+		self.BOT_NUM = bot_num#3
+		self.SLEEPING_TIME = sleeping_time
+		self.ABTEST_CHOICE = abtest_choice #   -1 random choice, > -1, the index of selected reply
+		self.BOT_CHOICE = bot_choice # -1 random, 0 worse case bot, 1 problem solving bot, 2 positive thining bot
+		assert self.BOT_CHOICE < self.BOT_NUM, 'Bot_num: {}, Bot_choice: {}'.format(self.BOT_NUM, self.BOT_CHOICE)
 		self.bot_name_list = ['worst-case bot', 'problem-solving bot', 'positive-thinking bot']
+
+	def set_sleeping_time(self, sleeping_time):
+		self.SLEEPING_TIME = sleeping_time
+
+	def set_bot_choice(self, bot_choice):
+		self.BOT_CHOICE = bot_choice
+		assert self.BOT_CHOICE < self.BOT_NUM, 'Bot_num: {}, Bot_choice: {}'.format(self.BOT_NUM, self.BOT_CHOICE)
 
 
 class Config:
