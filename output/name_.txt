@@ -1,0 +1,26 @@
+==================================
+1516414139.36:
+BOT: S
+USER:hi
+1516414170.46:
+BOT: ['Hi {name}, I\xe2\x80\x99m {bot_name}.', 'I\xe2\x80\x99m here to help you deal with your stress.', 'What\xe2\x80\x99s on your mind?']
+USER:b
+1516414178.34:
+BOT: ['Can you give me more details on why {problem} is stressing?']
+USER:c
+1516414186.97:
+BOT: ['Sorry to hear that.', 'What are you most afraid might happen as a result?']
+USER:d
+1516414194.55:
+BOT: ['Alright, on a scale of 1 to 10 (1 impossible, 10 certain), how likely is this scenario?']
+USER:10
+1516414204.05:
+BOT: ['Damn, sorry to hear that. If it happens, what could you do to get back on track?']
+USER:123
+1516414211.89:
+BOT: ['See you have a plan B.', 'Just remember if you\xe2\x80\x99re stressing that there is always a way to get back on your feet.']
+USER:ok
+1516414211.89:
+BOT: ['Thank you for sharing with me. I hope I\xe2\x80\x99ve been able to help.', 'Have a nice day!']
+USER:END_OF_CONVERSATION
+==================================

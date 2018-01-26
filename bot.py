@@ -17,7 +17,7 @@ from gtts import gTTS
 
 
 class StressBot(Client):
-	def __init__(self, email, password, reply_dict, mongo_collection, voice_choice=False, **kwargs):
+	def __init__(self, email, password, reply_dict, mongo_db, voice_choice=False, **kwargs):
 		Client.__init__(self, email, password)
 		self.user_history = defaultdict(list)
 		# self.user_history {thread_id: [[(bot_id, in_group_id, ab_test_id, msg, user_response_time), () ....], [], [], ...]}
@@ -30,7 +30,7 @@ class StressBot(Client):
 		self.config = Config()
 		self.topics = Topics()
 
-		self.collection = mongo_collection
+		self.db = mongo_db
 		self.voice_choice = voice_choice
 
 		additional_bot_control = kwargs.get('add_bot_ctl',{})
@@ -168,7 +168,7 @@ class StressBot(Client):
 				self.clean_last_record(thread_id)
 				raise ValueError
 
-			self.user_history[thread_id][-1][-1] += (msg, user_response_time,)
+			self.user_history[thread_id][-1][-1] += (topic, msg, user_response_time,)
 			
 			next_texts = self.reply_dict[bot_id][next_id].texts.get(topic, self.reply_dict[bot_id][next_id].texts[self.topics.GENERAL])
 			ab_test_index = random.randint(0, len(next_texts)-1) if self.params.ABTEST_CHOICE == -1 else min(len(next_texts)-1, self.params.ABTEST_CHOICE)
@@ -185,14 +185,29 @@ class StressBot(Client):
 					time.sleep(self.params.SLEEPING_TIME)
 
 			if next_id == self.config.CLOSING_INDEX:
-				self.user_history[thread_id][-1][-1] += ('END_OF_CONVERSATION', user_response_time,)
 
-				collection.insert(
+				query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
+				if self.db.test_user.find({'name': query_name}).count() == 0:
+					self.db.test_user.insert(
+							{
+								'name':query_name,
+								'user_id':thread_id
+							}
+						)
+
+
+				self.user_history[thread_id][-1][-1] += (topic, 'END_OF_CONVERSATION', user_response_time,)
+
+				self.db.test_history.insert(
 						{
 							'thread_id':thread_id,
 							'user_history': self.user_history[thread_id][-1]
 						}
 					)
+
+
+
+				#client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
 
 				self.delete_all_dict(thread_id)
 
@@ -222,10 +237,10 @@ if __name__ == "__main__":
 
 	pymongo_client = MongoClient()
 	db = pymongo_client.chatbot
-	collection = db.user_history
+	#collection = db.user_history
 
 	reply_dict = get_text_from_db()
 	email = "stressbotcommuter@gmail.com"
 	password = "stressbot@commuter"
-	client = StressBot(email, password, reply_dict, collection, voice_choice, add_bot_ctl=add_bot_ctl)
+	client = StressBot(email, password, reply_dict, db, voice_choice, add_bot_ctl=add_bot_ctl)
 	client.listen()

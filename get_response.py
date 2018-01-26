@@ -20,7 +20,7 @@ def get_text_from_db():
 
 	bot_texts = defaultdict(dict)
 	for i in range(params.BOT_NUM):
-		bot_texts[i][config.START_INDEX] = Reply(bot_id=i, in_group_id=config.START_INDEX, texts={topics.GENERAL:None}, next_id=-1)
+		bot_texts[i][config.START_INDEX] = Reply(bot_id=i, in_group_id=config.START_INDEX, texts={topics.GENERAL:[["START_OF_CONVERSATION"]]}, next_id=-1)
 		bot_texts[i][config.OPENNING_INDEX] = Reply(bot_id=i, in_group_id=config.OPENNING_INDEX, texts={topics.GENERAL:openning}, next_id=0)
 		bot_texts[i][config.CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.CLOSING_INDEX, texts={topics.GENERAL:closing}, next_id=None)
 		bot_texts[i][config.DK_INDEX] = Reply(bot_id=i, in_group_id=config.DK_INDEX, texts={topics.GENERAL:dk_check_at_begining}, next_id=[(config.DEFAULT_DK, config.DK_INDEX), (config.DEFAULT_NO, config.CLOSING_INDEX), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
