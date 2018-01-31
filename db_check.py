@@ -135,4 +135,3 @@ if __name__ == "__main__":
 	# get_name_userid_pairs()
 	#get_user_history('100000019168085', start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 2, 1, 0, 10, 0))
 	#date_report(start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 2, 1, 11, 40, 0), weekday=[2])
-
