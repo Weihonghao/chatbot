@@ -241,6 +241,6 @@ if __name__ == "__main__":
 
 	reply_dict = get_text_from_db()
 	email = "stressbotcommuter@gmail.com"
-	password = "stressbot@new"
+	password = "stressbot@newnew"
 	client = StressBot(email, password, reply_dict, db, voice_choice, add_bot_ctl=add_bot_ctl)
 	client.listen()
