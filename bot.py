@@ -240,7 +240,11 @@ if __name__ == "__main__":
 	#collection = db.user_history
 
 	reply_dict = get_text_from_db()
-	email = "stressbotcommuter@gmail.com"
-	password = "stressbot@1"
+
+	password_file = open('password.txt','r')
+	email = password_file.readline().strip()
+	password = password_file.readline().strip()
+	# email = "stressbotcommuter@gmail.com"
+	# password = "stressbot@1"
 	client = StressBot(email, password, reply_dict, db, voice_choice, add_bot_ctl=add_bot_ctl)
 	client.listen()
