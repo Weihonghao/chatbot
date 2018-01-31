@@ -53,7 +53,7 @@ def get_all_users():
 def get_user_history(thread_id, start_time=-1, end_time=-1):
 	pymongo_client = MongoClient()
 	db = pymongo_client.chatbot
-	collection = db.test_history
+	collection = db.user_history
 	out = open('output/user_history.txt','w')
 	reply_dict = get_text_from_db()
 	start_time_formatted, end_time_formatted = get_time_interval(start_time, end_time)
@@ -79,7 +79,7 @@ def get_user_history(thread_id, start_time=-1, end_time=-1):
 def get_name_userid_pairs():
 	pymongo_client = MongoClient()
 	db = pymongo_client.chatbot
-	collection = db.test_user
+	collection = db.user
 	out = open('output/name_userid_pairs.txt','w')
 	out.write('user_id name\n')
 	for each in collection.find():
@@ -90,7 +90,7 @@ def get_name_userid_pairs():
 def date_report(start_time=-1, end_time=-1, weekday=()):
 	pymongo_client = MongoClient()
 	db = pymongo_client.chatbot
-	collection = db.test_history
+	collection = db.user_history
 	reply_dict = get_text_from_db()
 	start_time_formatted, end_time_formatted = get_time_interval(start_time, end_time)
 	user_set = set()
@@ -130,9 +130,9 @@ def date_report(start_time=-1, end_time=-1, weekday=()):
 	out.close()
 
 if __name__ == "__main__":
-	#pprint.pprint(get_all_users())
-	#get_user_history('100000019168085')
-	#get_name_userid_pairs()
-	#get_user_history('100000019168085', start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 1, 26, 0, 10, 0))
-	date_report(start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 1, 26, 11, 40, 0), weekday=[4])
+	# pprint.pprint(get_all_users())
+	# get_user_history('100000019168085')
+	# get_name_userid_pairs()
+	#get_user_history('100000019168085', start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 2, 1, 0, 10, 0))
+	#date_report(start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 2, 1, 11, 40, 0), weekday=[2])
 

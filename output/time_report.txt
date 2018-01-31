@@ -3,8 +3,8 @@ total number of user: 1
 user list
 100000019168085
 ==================================
-There are 2 users on Friday
+There are 1 users on Wednesday
 ==================================
-worst-case bot is used 2 time(s)
-[u'100000019168085', u'100000019168085']
+problem-solving bot is used 1 time(s)
+[u'100000019168085']
 ==================================

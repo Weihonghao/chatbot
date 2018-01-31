@@ -1,30 +1,34 @@
 ==================================
-Fri Jan 19 18:08:59 2018:
+Wed Jan 31 13:21:30 2018:
 BOT: START_OF_CONVERSATION
-USER:hi
-Fri Jan 19 18:09:30 2018:
+USER:hello
+Wed Jan 31 13:21:43 2018:
 BOT: Hi {name}, I'm {bot_name}.
 BOT: I'm here to help you deal with your stress.
 BOT: What's on your mind?
-USER:b
-Fri Jan 19 18:09:38 2018:
-BOT: Can you give me more details on why {problem} is stressing?
-USER:c
-Fri Jan 19 18:09:46 2018:
-BOT: Sorry to hear that.
-BOT: What are you most afraid might happen as a result?
-USER:d
-Fri Jan 19 18:09:54 2018:
-BOT: Alright, on a scale of 1 to 10 (1 impossible, 10 certain), how likely is this scenario?
-USER:10
-Fri Jan 19 18:10:04 2018:
-BOT: Damn, sorry to hear that. If it happens, what could you do to get back on track?
-USER:123
-Fri Jan 19 18:10:11 2018:
-BOT: See you have a plan B.
-BOT: Just remember if you're stressing that there is always a way to get back on your feet.
+USER:i am nervous about test
+Wed Jan 31 13:21:56 2018:
+BOT: Why is {problem} stressing you out?
+USER:it is hard
+Wed Jan 31 13:22:06 2018:
+BOT: Ok, let's see how bad this problem is.
+BOT:  Is it really that big?
+BOT:  Would others think so?
+USER:yes
+Wed Jan 31 13:22:12 2018:
+BOT: If you could solve this problem, would your life improve?
+USER:yes
+Wed Jan 31 13:22:16 2018:
+BOT: Have you ever dealt with this problem or something similar before?
+USER:yes
+Wed Jan 31 13:22:21 2018:
+BOT: Could you use a similar strategy to solve it this time?
+USER:yes
+Wed Jan 31 13:22:29 2018:
+BOT: Good, you have a plan now!
+BOT: Go ahead and implement it.
 USER:ok
-Fri Jan 19 18:10:11 2018:
+Wed Jan 31 13:22:29 2018:
 BOT: Thank you for sharing with me. I hope I've been able to help.
 BOT: Have a nice day!
 USER:END_OF_CONVERSATION

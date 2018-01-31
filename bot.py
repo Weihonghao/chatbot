@@ -187,8 +187,8 @@ class StressBot(Client):
 			if next_id == self.config.CLOSING_INDEX:
 
 				query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
-				if self.db.test_user.find({'name': query_name}).count() == 0:
-					self.db.test_user.insert(
+				if self.db.user.find({'name': query_name}).count() == 0:
+					self.db.user.insert(
 							{
 								'name':query_name,
 								'user_id':thread_id
@@ -198,7 +198,7 @@ class StressBot(Client):
 
 				self.user_history[thread_id][-1][-1] += (topic, 'END_OF_CONVERSATION', user_response_time,)
 
-				self.db.test_history.insert(
+				self.db.user_history.insert(
 						{
 							'thread_id':thread_id,
 							'user_history': self.user_history[thread_id][-1]
