@@ -243,7 +243,7 @@ if __name__ == "__main__":
 	reply_dict = get_text_from_db()
 
 	if os.path.exists("/commuter/nltk_data"):
-		nltk.data.path.append("/commuter/nltk_data")
+		nltk.data.path = ["/commuter/nltk_data"] + nltk.data.path
 
 	password_file = open('password.txt','r')
 	email = password_file.readline().strip()
