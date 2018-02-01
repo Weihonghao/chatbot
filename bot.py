@@ -4,6 +4,7 @@ import time
 import random
 import string
 import sys, getopt
+import os, nltk
 
 from fbchat import log, Client
 from fbchat.models import *
@@ -241,8 +242,13 @@ if __name__ == "__main__":
 
 	reply_dict = get_text_from_db()
 
+	if os.path.exists("/commuter/nltk_data"):
+		nltk.data.path.append("/commuter/nltk_data")
+
 	password_file = open('password.txt','r')
 	email = password_file.readline().strip()
 	password = password_file.readline().strip()
+	print('email: {},  password: {}'.format(email, password))
+
 	client = StressBot(email, password, reply_dict, db, voice_choice, add_bot_ctl=add_bot_ctl)
 	client.listen()
