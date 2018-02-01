@@ -11,7 +11,7 @@ def get_text_from_db():
 	topics = Topics()
 
 	openning = [["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "Can you tell me a little bit about a recent event that makes you stressed?"],
-				["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "What’ stressing you out right now?"],
+				["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "What’s stressing you out right now?"],
 				["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "What’s on your mind?"],
 				["Hi {name}, I’m {bot_name}.", "I’m here to help you deal with your stress.", "Could you share something that’s on your mind?"]]
 	closing = [["Thank you for sharing with me. I hope I’ve been able to help.", "Have a nice day!"]]
@@ -27,7 +27,7 @@ def get_text_from_db():
 
 
 	tmp_text = {}
-	tmp_text[topics.GENERAL] = [["Can you give me more details on why {problem} is stressing?"], ["Why is {problem} stressing you out?"]]
+	tmp_text[topics.GENERAL] = [["Can you give me more details on why that is stressful?"], ["Why is that stressing you out?"]]
 	tmp_text[topics.TRAFFIC] = [["Traffic can really suck.", "How bad is it out there today?"]]
 	tmp_text[topics.TIRED] = [["I see that you seem tired.", "Do you feel you got enough sleep last night?"]]
 	tmp_text[topics.LATE] = [["Sorry to hear that you are late.", "How bad is it?"]]
