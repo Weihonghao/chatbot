@@ -104,7 +104,7 @@ class StressBot(Client):
 
 			if current_id == self.config.OPENNING_INDEX and  find_problem(msg)[0] != None:
 				self.user_problem_dict[thread_id], self.user_topic_dict[thread_id] = find_problem(msg)
-			problem = self.user_problem_dict.get(thread_id, 'problem')
+			problem = self.user_problem_dict.get(thread_id, 'that')
 			topic = self.user_topic_dict.get(thread_id, self.topics.GENERAL)
 
 			if msg.strip().lower() == 'change bot':

@@ -27,7 +27,7 @@ def get_text_from_db():
 
 
 	tmp_text = {}
-	tmp_text[topics.GENERAL] = [["Can you give me more details on why that is stressful?"], ["Why is that stressing you out?"]]
+	tmp_text[topics.GENERAL] = [["Can you give me more details on why {problem} is stressful?"], ["Why is {problem} stressing you out?"]]
 	tmp_text[topics.TRAFFIC] = [["Traffic can really suck.", "How bad is it out there today?"]]
 	tmp_text[topics.TIRED] = [["I see that you seem tired.", "Do you feel you got enough sleep last night?"]]
 	tmp_text[topics.LATE] = [["Sorry to hear that you are late.", "How bad is it?"]]
@@ -89,7 +89,7 @@ def get_text_from_db():
 
 
 	tmp_text = {}
-	tmp_text[topics.GENERAL] = [["Can you give me more details on why {problem} is stressing?"], ["Why is {problem} stressing you out?"]]
+	tmp_text[topics.GENERAL] = [["Can you give me more details on why {problem} is stressful?"], ["Why is {problem} stressing you out?"]]
 	tmp_text[topics.TRAFFIC] = [["No one likes traffic.", "How bad is it out there today?"]]
 	tmp_text[topics.TIRED] = [["I see that you seem tired.", "Do you know why?"]]
 	tmp_text[topics.LATE] = [["Why are you late today?"]]
@@ -170,7 +170,7 @@ def get_text_from_db():
 	#---------------------------------------------------------------------------------------------------------------------------------
 
 	tmp_text = {}
-	tmp_text[topics.GENERAL] = [["Can you give me more details on why {problem} is stressing?"], ["Why is {problem} stressing you out?"]]
+	tmp_text[topics.GENERAL] = [["Can you give me more details on why {problem} is stressful?"], ["Why is {problem} stressing you out?"]]
 	tmp_text[topics.TRAFFIC] = [["Could you give me more detail on the traffic is today?"]]
 	tmp_text[topics.TIRED] = [["How do you feel your tiredness is adding to your stress level?"]]
 	tmp_text[topics.LATE] = [["Can you give me more detail on the event you are late to"]]
