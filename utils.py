@@ -17,6 +17,7 @@ class Params:
 		self.BOT_CHOICE = bot_choice # -1 random, 0 worse case bot, 1 problem solving bot, 2 positive thining bot
 		assert self.BOT_CHOICE < self.BOT_NUM, 'Bot_num: {}, Bot_choice: {}'.format(self.BOT_NUM, self.BOT_CHOICE)
 		self.bot_name_list = ['doom bot', 'sherlock bot', 'glass-half-full bot']
+		self.bot_tech_name_list = ['worst case', 'problem solving', 'positive thinking']
 
 	def set_sleeping_time(self, sleeping_time):
 		self.SLEEPING_TIME = sleeping_time

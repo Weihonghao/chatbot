@@ -107,11 +107,14 @@ class StressBot(Client):
 			problem = self.user_problem_dict.get(thread_id, 'that')
 			topic = self.user_topic_dict.get(thread_id, self.topics.GENERAL)
 
-			if msg.strip().lower() == 'change bot':
+			if msg.strip().lower() == 'change bot' or msg.strip().lower() in self.params.bot_tech_name_list:
 				self.clean_last_record(thread_id)
 				self.delete_all_dict(thread_id, delete_name=False)
 				while True:
-					tmp = random.randint(0, self.params.BOT_NUM-1)
+					if msg.strip().lower() == 'change bot':
+						tmp = random.randint(0, self.params.BOT_NUM-1)
+					else:
+						tmp = self.params.bot_tech_name_list.index(msg.strip().lower())
 					if tmp != bot_id:
 						self.user_bot_dict[thread_id] = tmp
 						break
