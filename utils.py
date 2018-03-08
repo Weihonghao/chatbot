@@ -10,14 +10,14 @@ from collections import *
 
 
 class Params:
-	def __init__(self, bot_num=3, sleeping_time=2, abtest_choice=-1, bot_choice=-1):
+	def __init__(self, bot_num=7, sleeping_time=2, abtest_choice=-1, bot_choice=-1):
 		self.BOT_NUM = bot_num#3
 		self.SLEEPING_TIME = sleeping_time
 		self.ABTEST_CHOICE = abtest_choice #   -1 random choice, > -1, the index of selected reply
 		self.BOT_CHOICE = bot_choice # -1 random, 0 worse case bot, 1 problem solving bot, 2 positive thining bot
 		assert self.BOT_CHOICE < self.BOT_NUM, 'Bot_num: {}, Bot_choice: {}'.format(self.BOT_NUM, self.BOT_CHOICE)
-		self.bot_name_list = ['doom bot', 'sherlock bot', 'glass-half-full bot']
-		self.bot_tech_name_list = ['worst case', 'problem solving', 'positive thinking']
+		self.bot_name_list = ['doom bot', 'sherlock bot', 'glass-half-full bot', 'Sir Laughs-a-bot', 'chill bot', 'treat yourself bot', 'dunno bot']
+		self.bot_tech_name_list = ['worst case', 'problem solving', 'positive thinking', 'humor', 'relaxation', 'self love', 'distraction']
 
 	def set_sleeping_time(self, sleeping_time):
 		self.SLEEPING_TIME = sleeping_time
