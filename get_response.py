@@ -11,7 +11,7 @@ def get_text_from_db():
 	config = Config()
 	topics = Topics()
 
-	openning = [["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "Can you tell me a little bit about a recent event that makes you stressed?"],
+	openning = [["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "Can you tell me a little bit about a recent event that is making you stressed?"],
 				["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "What\'s stressing you out right now?"],
 				["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "What\'s on your mind?"],
 				["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "Could you share something that\'s on your mind?"]]
@@ -39,7 +39,7 @@ def get_text_from_db():
 
 
 	tmp_text = {}
-	tmp_text[topics.GENERAL] = [["Hmm I see…", "What are you most worried about happening due to  {problem}?"], ["Sorry to hear that.", "What are you most afraid might happen as a result?"]]
+	tmp_text[topics.GENERAL] = [["Hmm I see…", "What are you most worried about happening due to {problem}?"], ["I'm sorry to hear that.", "What are you most afraid might happen as a result?"]]
 	# tmp_text[topics.TRAFFIC] = [["That\'s unfortunate.", "What do you think the worst possible outcome of this traffic is for you?"]]
 	# tmp_text[topics.TIRED] = [["That could be a possible fix.", "What\'s the worst possible outcome of you being tired?"]]
 	# tmp_text[topics.LATE] = [["Sorry to hear that.", "Let me ask you something, what is the worst possible outcome of your lateness?"]]
@@ -48,33 +48,33 @@ def get_text_from_db():
 	bot_texts[0][1] = Reply(bot_id=0, in_group_id=1, texts=tmp_text, next_id=[(config.DEFAULT_DK, 7), (config.DEFAULT_OTHERS, 2)])
 	del tmp_text
 
-	bot_texts[0][2] = Reply(bot_id=0, in_group_id=2, texts={topics.GENERAL:[["Ok, on a scale of 1 to 10, with 1 being almost impossible, how likely is this scenario?"], ["Alright, on a scale of 1 to 10 (1 impossible, 10 certain), how likely is this scenario?"]]}, next_id= [(('5','6','7', 'five', 'six','seven', '8','9','10', 'eight', 'nine', 'ten', 'likely', 'certain'), 3), (('1','2','3','4','one','two','three','four', 'unlikely', 'impossible'), 4), ((config.DEFAULT_OTHERS, ), 10)])
+	bot_texts[0][2] = Reply(bot_id=0, in_group_id=2, texts={topics.GENERAL:[["Thank you for sharing your worry with me.", "Ok, on a scale of 1 to 10, with 1 being almost impossible, how likely is this scenario?"], ["Alright, on a scale of 1 to 10 (1 impossible, 10 certain), how likely is this scenario?"]]}, next_id= [(('5','6','7', 'five', 'six','seven', '8','9','10', 'eight', 'nine', 'ten', 'likely', 'certain'), 3), (('1','2','3','4','one','two','three','four', 'unlikely', 'impossible'), 4), ((config.DEFAULT_OTHERS, ), 10)])
 
 
 	bot_texts[0][3] = Reply(bot_id=0, in_group_id=3, texts={topics.GENERAL:[["Alright, in the case that this happens, what could you do to get back on track?"]]}, next_id=[(config.DEFAULT_DK, 6), (config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 8)])
-	bot_texts[0][4] = Reply(bot_id=0, in_group_id=4, texts={topics.GENERAL:[["So would you agree that this scenario is unlikely?"]]}, next_id=[(config.DEFAULT_YES, 9), (config.DEFAULT_NO, 3), (config.DEFAULT_OTHERS, 8)])
+	bot_texts[0][4] = Reply(bot_id=0, in_group_id=4, texts={topics.GENERAL:[["So would you agree that this scenario is unlikely?"]]}, next_id=[(config.DEFAULT_NO, 3), (config.DEFAULT_OTHERS, 9)])
 	#bot_texts[0][5] = Reply(bot_id=0, in_group_id=5, texts={topics.GENERAL:[["So would you agree that the worst case situation is unlikely?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 9)])
 
-	bot_texts[0][6] = Reply(bot_id=0, in_group_id=6, texts={topics.GENERAL:[["That\'s ok. Could you try and think of a solution?"], ["Is there anything you could do to improve the situation?"]]}, next_id= [(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 8)])
+	bot_texts[0][6] = Reply(bot_id=0, in_group_id=6, texts={topics.GENERAL:[[""]]}, next_id= [(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 8)])
 	
 
 	tmp_text = {}
-	tmp_text[topics.GENERAL] = [["Maybe spend some time thinking about your problem and possible ways to approach it."]]
-	tmp_text[topics.TRAFFIC] = [["Maybe taking a different route or leaving earlier or later could solve your problem?", "Spending some time planning your travel may help you come up with a solution."]]
-	tmp_text[topics.TIRED] = [["The easiest solution would be to just go to sleep.", "But if this doesn\'t work for you,", "spend some time thinking of ways to re-organize your schedule to accommodate a good night\'s rest."]]
-	tmp_text[topics.LATE] = [["Everyone\'s late once in awhile.", "However, if it is a common occurence maybe think about leaving earlier or taking a quicker route to make your scheduled events on time."]]
-	tmp_text[topics.DRIVER] = [["If aggressive driving is a frequent issue, then perhaps taking a different route could solve your problem."]]
-	tmp_text[topics.VEHICLE] = [["Taking your vehicle to the dealership or mechanic is usually a good solution", "as they can pinpoint the exact problem with your vehicle and offer you a solution."]]
-	bot_texts[0][7] = Reply(bot_id=0, in_group_id=7, texts=tmp_text, next_id=config.CLOSING_INDEX)
+	tmp_text[topics.GENERAL] = [["It's ok not to know. Tell me one thing that concerns you about the situation."]]
+	# tmp_text[topics.TRAFFIC] = [["Maybe taking a different route or leaving earlier or later could solve your problem?", "Spending some time planning your travel may help you come up with a solution."]]
+	# tmp_text[topics.TIRED] = [["The easiest solution would be to just go to sleep.", "But if this doesn\'t work for you,", "spend some time thinking of ways to re-organize your schedule to accommodate a good night\'s rest."]]
+	# tmp_text[topics.LATE] = [["Everyone\'s late once in awhile.", "However, if it is a common occurence maybe think about leaving earlier or taking a quicker route to make your scheduled events on time."]]
+	# tmp_text[topics.DRIVER] = [["If aggressive driving is a frequent issue, then perhaps taking a different route could solve your problem."]]
+	# tmp_text[topics.VEHICLE] = [["Taking your vehicle to the dealership or mechanic is usually a good solution", "as they can pinpoint the exact problem with your vehicle and offer you a solution."]]
+	bot_texts[0][7] = Reply(bot_id=0, in_group_id=7, texts=tmp_text, next_id=2)
 	del tmp_text
 
 
 
-	bot_texts[0][8] = Reply(bot_id=0, in_group_id=8, texts={topics.GENERAL:[["It seems like you have a plan B", "Just remember even though you cannot control everything, there is a way to get back on your feet."]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[0][8] = Reply(bot_id=0, in_group_id=8, texts={topics.GENERAL:[["Cool, looks like you have a plan B.", "Just remember even though you cannot control everything, there is a way to get back on your feet."]]}, next_id=config.CLOSING_INDEX)
 
 
 	tmp_text = {}
-	# tmp_text[topics.GENERAL] = [["Glad to hear that.", "Seems like you have things in perspective."],["Glad to hear that.", "Sounds like you have things in perspective."]]
+	tmp_text[topics.GENERAL] = [["Glad to hear that", "Sometimes it’s helpful to realize that our worries aren’t always as likely as we think they are.", "Do you agree?"]]
 	# tmp_text[topics.TRAFFIC] = [["Glad to hear that.", "Traffic is a nuisance but getting too stressed out by it is often more trouble than it\'s worth."]]
 	# tmp_text[topics.TIRED] = [["Seems like you have things in perspective.", "Often, we just need a good night\'s rest or even  a short nap to feel refreshed."]]
 	# tmp_text[topics.LATE] = [["Even the best prepared are sometimes late.", "It\'s usually more trouble than it\'s worth to get too worked up about it."]]
@@ -212,15 +212,16 @@ def get_text_from_db():
 	bot_texts[3][0] = Reply(bot_id=3, in_group_id=0, texts={topics.GENERAL:[["Ok, can you give me more detail about this event?"]]}, next_id=1)
 	bot_texts[3][1] = Reply(bot_id=3, in_group_id=1, texts={topics.GENERAL:[["Thank you for sharing.", "That does sound stressful.", "Ok, let’s try looking at this situation in a different light.", "I want you to take a few minutes to come up with a joke about this situation", " Would you like to have an example?"]]}, next_id=[(config.DEFAULT_NO, 3), (config.DEFAULT_OTHERS, 2)])
 	bot_texts[3][2] = Reply(bot_id=3, in_group_id=2, texts={topics.GENERAL:[["For example, if the situation was being stuck having to help people out constantly you might come up with the following joke:", "I\'d love to help you out. Which way did you come in again?", "Don\'t worry about it being the best joke, just find something humorous about your situation.", "Please tell me your joke!"]]}, next_id=3)
-	bot_texts[3][3] = Reply(bot_id=3, in_group_id=3, texts={topics.GENERAL:[["Haha that\'s true.", "Oftentimes finding the humor in stressful situations can help diffuse some tension."], ["Good joke!", "Sometimes there are good things that happen even if the situation isn\'t the best. "], ["Heehee! You\'re funny!", "Humor can be found in many situations!"]]}, next_id=4)
-	bot_texts[3][4] = Reply(bot_id=3, in_group_id=4, texts={topics.GENERAL:[["Did that help you to find something good about the situation?"]]}, next_id=config.CLOSING_INDEX)
-
+	bot_texts[3][3] = Reply(bot_id=3, in_group_id=3, texts={topics.GENERAL:[["Haha that\'s true.", "Oftentimes finding the humor in stressful situations can help diffuse some tension."], ["Good joke!", "Sometimes there are good things that happen even if the situation isn\'t the best. "], ["Heehee! You\'re funny!", "Humor can be found in many situations"]]}, next_id=4)
+	bot_texts[3][4] = Reply(bot_id=3, in_group_id=4, texts={topics.GENERAL:[["Did that help you to find something good (or at least funny) about the situation?"]]}, next_id=[(config.DEFAULT_YES, 5), (config.DEFAULT_OTHERS, 6)])
+	bot_texts[3][5] = Reply(bot_id=3, in_group_id=5, texts={topics.GENERAL:[["I'm glad :) Would you consider trying this strategy (finding a joke) in the future?"]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[3][6] = Reply(bot_id=3, in_group_id=6, texts={topics.GENERAL:[["That's ok, humor isn't always the answer.", "Just remember that trying to find something funny about yout situation can help lighten the mood when you're stressed.", "Sound good?"]]}, next_id=config.CLOSING_INDEX)
 
 
 	#---------------------------------------------------------------------------------------------------------------------------------
 	## relaxation bot
 	bot_texts[4][0] = Reply(bot_id=4, in_group_id=0, texts={topics.GENERAL:[["Ok, can you give me more detail about this event?"]]}, next_id=1)
-	bot_texts[4][1] = Reply(bot_id=4, in_group_id=1, texts={topics.GENERAL:[["I have a couple strategies to help.", "Say yes if you rather do a visualization.", "Say no if you want to focus on your breathing.",  "If you don\'t know which activity you want to do, you can also say no preference and I can decide for you."]]}, next_id=[(('no preference', 'both'), random.randint(2,3)), (('no', ), 3), (('yes', ), 2)])
+	bot_texts[4][1] = Reply(bot_id=4, in_group_id=1, texts={topics.GENERAL:[["I have a couple strategies to help you feel better.", "Say yes if you rather do a visualization.", "Say no if you want to focus on your breathing.",  "If you don\'t know which activity you want to do, you can also say no preference and I can decide for you."]]}, next_id=[(('no preference', 'both'), random.randint(2,3)), (('no', ), 3), (('yes', ), 2)])
 
 	bot_texts[4][2] = Reply(bot_id=4, in_group_id=2, texts={topics.GENERAL:[["Ok, {name}, let\'s do a visualization activity.", "I\'d like you to close your eyes and think of any place that makes you feel happy or calm.", "Think of all the details, as vivid of a picture as you can imagine.", "Think of your senses: the sights, the smells, the sounds."], ["Picture a time when you felt at peace. What was around you in this time?", "What did it feel like?", "What do you see, smell or hear?", "Let me know when you are done with your visualization."]]}, next_id=4)
 	bot_texts[4][4] = Reply(bot_id=4, in_group_id=4, texts={topics.GENERAL:[["Could you walk me through your experience?", "What did you see? What did you hear?", "How did you feel?"]]}, next_id=5)
@@ -236,28 +237,28 @@ def get_text_from_db():
 	bot_texts[4][10] = Reply(bot_id=4, in_group_id=10, texts={topics.GENERAL:[["Take 5 deep breaths while focusing on you surroundings."]]}, next_id=12)
 	bot_texts[4][12] = Reply(bot_id=4, in_group_id=12, texts={topics.GENERAL:[["Would you like to repeat the exercise?"]]}, next_id=[(config.DEFAULT_NO, 13), (config.DEFAULT_OTHERS, 3)])
 
-	bot_texts[4][13] = Reply(bot_id=4, in_group_id=13, texts={topics.GENERAL:[["That\'s okay, taking a moment to be mindful may help you in situations when you are feeling stressed."]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[4][13] = Reply(bot_id=4, in_group_id=13, texts={topics.GENERAL:[["Oftentimes, taking a moment to be mindful may help you in situations when you are feeling stressed."]]}, next_id=config.CLOSING_INDEX)
 	#---------------------------------------------------------------------------------------------------------------------------------
 	## self-love bot
 
 	bot_texts[5][0] = Reply(bot_id=5, in_group_id=0, texts={topics.GENERAL:[["Oh, sorry to hear that. Could you give me more information about {problem}?"]]}, next_id=2)
-	bot_texts[5][2] = Reply(bot_id=5, in_group_id=2, texts={topics.GENERAL:[["Imagine a close friend came to you with a similar problem.", "How would you support them?"], ["Imagine a close friend ask you to help with a similar problem.", "What might you say to them to make them feel better?"]]}, next_id=[(config.DEFAULT_DK, 3), (config.DEFAULT_OTHERS, 5)])
+	bot_texts[5][2] = Reply(bot_id=5, in_group_id=2, texts={topics.GENERAL:[["Imagine a close friend came to you with a similar problem.", "How would you support them?"], ["Imagine a close friend asked you to help with a similar problem.", "What might you say to them to make them feel better?"]]}, next_id=[(config.DEFAULT_DK, 3), (config.DEFAULT_OTHERS, 5)])
 	bot_texts[5][3] = Reply(bot_id=5, in_group_id=3, texts={topics.GENERAL:[["That\'s okay, sometimes it\'s hard to know how to support someone in a difficult situation.", "I send you some things I might do when I\'m stressed.", "Feel free to use this list for ideas. ", "You can also add your own if you feel like I missed something.", "Does that sound good?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
 	bot_texts[5][5] = Reply(bot_id=5, in_group_id=5, texts={topics.GENERAL:[["What do you think are the benefits of offering this kind of support?"]]}, next_id=6)
 	bot_texts[5][6] = Reply(bot_id=5, in_group_id=6, texts={topics.GENERAL:[["Do you have a friend you could go to for this type of support?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 7)])
 	bot_texts[5][7] = Reply(bot_id=5, in_group_id=7, texts={topics.GENERAL:[["Could you make a plan of when to connect with this person?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 8)])
 	bot_texts[5][8] = Reply(bot_id=5, in_group_id=8, texts={topics.GENERAL:[["Awesome, friends can often provide the best support", "It’s great that you have made time to prioritize yourself!"]]}, next_id=config.CLOSING_INDEX)
 
-	bot_texts[5][4] = Reply(bot_id=5, in_group_id=4, texts={topics.GENERAL:[["I wish I could give you a hug right now to make you feel better.", "I care about you, and I\'m sure there are others that do to, even if they are not available right now. ", "I hope I have been able to help, and I\'m here whenever you need me. ", "Promise you would find me for help, will you?"]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[5][4] = Reply(bot_id=5, in_group_id=4, texts={topics.GENERAL:[["I wish I could give you a hug right now to make you feel better.", "I care about you, and I\'m sure there are others that do to, even if they are not available right now. ", "I hope I have been able to help, and I\'m here whenever you need me. ", "If you ever want to talk about your problems just find me or one of my friends, ok?"]]}, next_id=config.CLOSING_INDEX)
 	
 
 	#---------------------------------------------------------------------------------------------------------------------------------
 	## distraction bot
 		#Distraction - dunno bot
-	bot_texts[6][0] = Reply(bot_id=6, in_group_id=0, texts={topics.GENERAL:[["Ok, I think that can definitely be hard… Let’s try shift our attention to something else.", "Can you tell me about something you are looking forward to? "], ["Things can be stressful at times. One tool is to think about something that is coming up that is exciting.", "What is an event that you are looking forward to?"]]}, next_id=1)
-	bot_texts[6][1] = Reply(bot_id=6, in_group_id=1, texts={topics.GENERAL:[["Awesome!", "What makes you excited about it?"]]}, next_id=2)
-	bot_texts[6][2] = Reply(bot_id=6, in_group_id=2, texts={topics.GENERAL:[["How often do you go to it?"], ["Tell me more! I want to hear all about it!"]]}, next_id=3)
-	bot_texts[6][3] = Reply(bot_id=6, in_group_id=3, texts={topics.GENERAL:[["Do you have another event that you are excited about?"], ["Would you like to do this with another event?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 3)])
+	bot_texts[6][0] = Reply(bot_id=6, in_group_id=0, texts={topics.GENERAL:[["Ok, I think that can definitely be stressful … Let’s try to shift our attention to something else to help get your mind off it.", "Can you tell me about something you are looking forward to? "], ["Things can be stressful at times. One tool is to think about something that is coming up that is exciting.", "What is an event that you are looking forward to?"]]}, next_id=1)
+	bot_texts[6][1] = Reply(bot_id=6, in_group_id=1, texts={topics.GENERAL:[["Awesome!", "What makes you excited about it?"], ["Cool, tell me about it."]]}, next_id=2)
+	bot_texts[6][2] = Reply(bot_id=6, in_group_id=2, texts={topics.GENERAL:[["How often do you get to do it?"], ["Tell me more! I want to hear all about it!"]]}, next_id=3)
+	bot_texts[6][3] = Reply(bot_id=6, in_group_id=3, texts={topics.GENERAL:[["Do you have another event that you are excited about?"], ["Would you like to do this activity with another event?"]]}, next_id=[(config.DEFAULT_YES, 2), (config.DEFAULT_OTHERS, 4)])
 	bot_texts[6][4] = Reply(bot_id=6, in_group_id=4, texts={topics.GENERAL:[["Cool. When you're feeling stressed, it's can be good to think about other things that you might be excited about."],["Snazzy. Next time you feel stressed, you could think about something that makes you excited."],["Dope! Sometimes if you are feeling stressed, it can be helpful to disengage from the current events and shift your attention to things that you are looking forward to."]]}, next_id=config.CLOSING_INDEX)
 
 	#---------------------------------------------------------------------------------------------------------------------------------
@@ -289,10 +290,10 @@ def get_text_from_db():
 
 	bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, in_group_id=config.OPENNING_INDEX, texts={topics.GENERAL:[["Hi! I\'m Onboarding-Bot!", "I\'m here to introduce you to all my friends!", "We are here to help you with stress."]]}, next_id=0)
 	
-	tmp_text = [["I\'m here to give you a few pointers about how to interact with me and my friends. First, we are only bots. We strive to do our best to understand you, and you will get more from us if you are able to give more than a yes or no answer to our questions. ", 
-				"We bots are young and spritely, which also means that we are still learning. Right now it\'s important for us that you respond to each question in one message block. Feel free to hit return to add multiple paragraphs but only press send once you have expressed what you want to share. It\'s okay if you forget, we might just get a bit confused", 
+	tmp_text = [["I\'m here to give you a few pointers about how to interact with me and my friends.",  "First, we are only bots. We strive to do our best to understand you, and you will get more from us if you are able to give more than a yes or no answer to our questions. ", 
+				"We bots are also pretty new, which means that we are still learning.", "Right now it\'s important for us that you respond to each question in one message block.", "Feel free to hit return to add multiple paragraphs but only press send once you have expressed what you want to share. It\'s okay if you forget, we might just get a bit confused", 
 				"We will also ask some questions about how helpful we are. We want you to answer as honestly as you can because it will help us to learn and improve. ",
-				"Lastly, in emergencies, please stop and call 911 or 1-800-273-8255 (the suicide hotline). A human may never read what you are writing, so it\'s important that you get help apart from us if you feel you are in danger.",
+				"Lastly, in emergencies, please stop and call 911 or 1-800-273-8255 (the suicide hotline).", "A human may never read what you are writing, so it\'s important that you get help apart from us if you feel you are in danger.",
 				"Sound good? "]]
 	
 	bot_texts[7][0] = Reply(bot_id=7, in_group_id=0, texts={topics.GENERAL:tmp_text}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])

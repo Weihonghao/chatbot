@@ -78,7 +78,7 @@ class StressBot(Client):
 			if msg[-1] in list(string.punctuation):
 				msg = msg[:-1]
 			if not chcek_rubbish_word(msg):
-				reply_text = "Sorry I cannot understand your word. Could you repeat it again?"
+				reply_text = "Sorry I didn't get that. Could you repeat yourself?"
 				self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
 				if self.voice_choice:
 					#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
@@ -155,9 +155,9 @@ class StressBot(Client):
 
 
 			keyword_dict = {
-				self.config.DEFAULT_YES:['yes', 'ok', 'sure', 'right'],
-				self.config.DEFAULT_NO:['no', 'not',  'neither', 'neg', 'don\'t', 'doesn\'', 'donnot', 'dont', '\'t', 'nothing'],
-				self.config.DEFAULT_DK:["dk", "dunno", "dno", "don't know"]
+				self.config.DEFAULT_YES:['yes', 'ok', 'sure', 'right', 'yea', 'ye', 'yup', 'yeah'],
+				self.config.DEFAULT_NO:['no', 'not',  'neither', 'neg', 'don\'t', 'doesn\'', 'donnot', 'dont', '\'t', 'nothing', 'nah'],
+				self.config.DEFAULT_DK:["dk", "dunno", "dno", "don't know", "idk"]
 			}
 
 			if type(next_id) == list and len(next_id) > 0:
