@@ -6,6 +6,7 @@ import string
 import sys, getopt
 import os, nltk
 
+
 from fbchat import log, Client
 from fbchat.models import *
 from collections import *
@@ -15,7 +16,7 @@ from get_response import get_text_from_db
 from pymongo import MongoClient
 from gtts import gTTS
 
-
+onboarding_id = 7
 
 class StressBot(Client):
 	def __init__(self, email, password, reply_dict, mongo_db, voice_choice=False, **kwargs):
@@ -97,18 +98,23 @@ class StressBot(Client):
 						or self.user_history[thread_id][-1][-1][1] == self.config.CLOSING_INDEX:
 							_bot_choice = self.user_bot_dict[thread_id] if thread_id in self.user_bot_dict else self.params.BOT_CHOICE
 							bot_id = random.randint(0, self.params.BOT_NUM-1) if _bot_choice == -1 else _bot_choice
+							query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
+							if self.db.user.find({'name': query_name}).count() == 0:
+								bot_id = onboarding_id
 							self.user_history[thread_id].append([(bot_id, self.config.START_INDEX, 0)])
 			bot_id, current_id, _ = self.user_history[thread_id][-1][-1]
 			next_id = self.reply_dict[bot_id][current_id].next_id
 
 
-			if current_id == self.config.OPENNING_INDEX and  find_problem(msg)[0] != None:
-				self.user_problem_dict[thread_id], self.user_topic_dict[thread_id] = find_problem(msg)
+			if current_id == self.config.OPENNING_INDEX and  find_problem(msg) != None:
+				self.user_problem_dict[thread_id], self.user_topic_dict[thread_id] = find_problem(msg), Topics().GENERAL
 			problem = self.user_problem_dict.get(thread_id, 'that')
 			topic = self.user_topic_dict.get(thread_id, self.topics.GENERAL)
 
 			if msg.strip().lower() == 'change bot' or msg.strip().lower() in self.params.bot_tech_name_list:
-				self.clean_last_record(thread_id)
+				whether_return = bot_id != onboarding_id
+				if whether_return:
+					self.clean_last_record(thread_id)
 				self.delete_all_dict(thread_id, delete_name=False)
 				if msg.strip().lower() == 'change bot':
 					while True:
@@ -118,8 +124,9 @@ class StressBot(Client):
 							break
 				else:
 					self.user_bot_dict[thread_id] = self.params.bot_tech_name_list.index(msg.strip().lower())
-					
-				return None
+				print(whether_return, bot_id)
+				if whether_return:
+					return None
 
 			if current_id == self.config.START_INDEX:
 				for each in ['i am', 'i\'m', 'this is', 'name is']:

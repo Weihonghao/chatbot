@@ -28,7 +28,7 @@ def get_text_from_db():
 
 
 	tmp_text = {}
-	tmp_text[topics.GENERAL] = [["Can you share with me more details about this {problem}?"], ["Why is {problem} stressing you out?"]]
+	tmp_text[topics.GENERAL] = [["Can you share with me more details about {problem}?"], ["Why is {problem} stressing you out?"]]
 	# tmp_text[topics.TRAFFIC] = [["Traffic can really suck.", "How bad is it out there today?"]]
 	# tmp_text[topics.TIRED] = [["I see that you seem tired.", "Do you feel you got enough sleep last night?"]]
 	# tmp_text[topics.LATE] = [["Sorry to hear that you are late.", "How bad is it?"]]
@@ -39,7 +39,7 @@ def get_text_from_db():
 
 
 	tmp_text = {}
-	tmp_text[topics.GENERAL] = [["Hmm I see…", "What are you most worried about happening due to this {problem}?"], ["Sorry to hear that.", "What are you most afraid might happen as a result?"]]
+	tmp_text[topics.GENERAL] = [["Hmm I see…", "What are you most worried about happening due to  {problem}?"], ["Sorry to hear that.", "What are you most afraid might happen as a result?"]]
 	# tmp_text[topics.TRAFFIC] = [["That\'s unfortunate.", "What do you think the worst possible outcome of this traffic is for you?"]]
 	# tmp_text[topics.TIRED] = [["That could be a possible fix.", "What\'s the worst possible outcome of you being tired?"]]
 	# tmp_text[topics.LATE] = [["Sorry to hear that.", "Let me ask you something, what is the worst possible outcome of your lateness?"]]
@@ -91,7 +91,7 @@ def get_text_from_db():
 
 
 	tmp_text = {}
-	tmp_text[topics.GENERAL] = [["Ok, can you give me more detail about your {problem}"]]
+	tmp_text[topics.GENERAL] = [["Ok, can you give me more detail about {problem}"]]
 	# tmp_text[topics.TRAFFIC] = [["No one likes traffic.", "How bad is it out there today?"]]
 	# tmp_text[topics.TIRED] = [["I see that you seem tired.", "Do you know why?"]]
 	# tmp_text[topics.LATE] = [["Why are you late today?"]]
@@ -240,7 +240,7 @@ def get_text_from_db():
 	#---------------------------------------------------------------------------------------------------------------------------------
 	## self-love bot
 
-	bot_texts[5][0] = Reply(bot_id=5, in_group_id=0, texts={topics.GENERAL:[["Oh, sorry to hear that. Could you give me more information about the {problem}?"]]}, next_id=2)
+	bot_texts[5][0] = Reply(bot_id=5, in_group_id=0, texts={topics.GENERAL:[["Oh, sorry to hear that. Could you give me more information about {problem}?"]]}, next_id=2)
 	bot_texts[5][2] = Reply(bot_id=5, in_group_id=2, texts={topics.GENERAL:[["Imagine a close friend came to you with a similar problem.", "How would you support them?"], ["Imagine a close friend ask you to help with a similar problem.", "What might you say to them to make them feel better?"]]}, next_id=[(config.DEFAULT_DK, 3), (config.DEFAULT_OTHERS, 5)])
 	bot_texts[5][3] = Reply(bot_id=5, in_group_id=3, texts={topics.GENERAL:[["That\'s okay, sometimes it\'s hard to know how to support someone in a difficult situation.", "I send you some things I might do when I\'m stressed.", "Feel free to use this list for ideas. ", "You can also add your own if you feel like I missed something.", "Does that sound good?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
 	bot_texts[5][5] = Reply(bot_id=5, in_group_id=5, texts={topics.GENERAL:[["What do you think are the benefits of offering this kind of support?"]]}, next_id=6)
