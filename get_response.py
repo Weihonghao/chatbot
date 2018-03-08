@@ -284,5 +284,23 @@ def get_text_from_db():
 
 	# bot_texts[7][7] = Reply(bot_id=7, in_group_id=7, texts={topics.GENERAL:[[""]]}, next_id=)
 
+	#---------------------------------------------------------------------------------------------------------------------------------
+	## onboarding bot
+
+	bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, in_group_id=config.OPENNING_INDEX, texts={topics.GENERAL:[["Hi! I\'m Onboarding-Bot!", "I\'m here to introduce you to all my friends!", "We are here to help you with stress."]]}, next_id=0)
+	
+	tmp_text = [["I\'m here to give you a few pointers about how to interact with me and my friends. First, we are only bots. We strive to do our best to understand you, and you will get more from us if you are able to give more than a yes or no answer to our questions. ", 
+				"We bots are young and spritely, which also means that we are still learning. Right now it\'s important for us that you respond to each question in one message block. Feel free to hit return to add multiple paragraphs but only press send once you have expressed what you want to share. It\'s okay if you forget, we might just get a bit confused", 
+				"We will also ask some questions about how helpful we are. We want you to answer as honestly as you can because it will help us to learn and improve. ",
+				"Lastly, in emergencies, please stop and call 911 or 1-800-273-8255 (the suicide hotline). A human may never read what you are writing, so it\'s important that you get help apart from us if you feel you are in danger.",
+				"Sound good? "]]
+	
+	bot_texts[7][0] = Reply(bot_id=7, in_group_id=0, texts={topics.GENERAL:tmp_text}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
+	del tmp_text
+	bot_texts[7][1] = Reply(bot_id=7, in_group_id=1, texts={topics.GENERAL:[["Please email our tech team. If you have any questions on the above. We would love to assist you."]]}, next_id=3)
+	bot_texts[7][2] = Reply(bot_id=7, in_group_id=2, texts={topics.GENERAL:[["Awesome!", "What chatbot would you like to meet first?"]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[7][3] = Reply(bot_id=7, in_group_id=3, texts={topics.GENERAL:[["What chatbot would you like to meet first?"]]}, next_id=config.CLOSING_INDEX)
+
+
 
 	return bot_texts
