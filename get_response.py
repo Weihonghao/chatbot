@@ -22,7 +22,8 @@ def get_text_from_db():
 	bot_texts = defaultdict(dict)
 	for i in range(params.BOT_NUM):
 		bot_texts[i][config.START_INDEX] = Reply(bot_id=i, in_group_id=config.START_INDEX, texts={topics.GENERAL:[["START_OF_CONVERSATION"]]}, next_id=-1)
-		bot_texts[i][config.OPENNING_INDEX] = Reply(bot_id=i, in_group_id=config.OPENNING_INDEX, texts={topics.GENERAL:openning}, next_id=0)
+		bot_texts[i][config.OPENNING_INDEX] = Reply(bot_id=i, in_group_id=config.OPENNING_INDEX, texts={topics.GENERAL:openning}, next_id=config.ARE_YOU_DONE_INDEX)
+		bot_texts[i][config.ARE_YOU_DONE_INDEX] = Reply(bot_id=i, in_group_id=config.ARE_YOU_DONE_INDEX, texts={topics.GENERAL:[["Are you done? If so, please tell me. Otherwise, please go on."]]}, next_id=[(config.DEFAULT_NO, config.ARE_YOU_DONE_INDEX), (config.DEFAULT_OTHERS, 0)])
 		bot_texts[i][config.CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.CLOSING_INDEX, texts={topics.GENERAL:closing}, next_id=None)
 		bot_texts[i][config.DK_INDEX] = Reply(bot_id=i, in_group_id=config.DK_INDEX, texts={topics.GENERAL:dk_check_at_begining}, next_id=[(config.DEFAULT_DK, config.DK_INDEX), (config.DEFAULT_NO, config.CLOSING_INDEX), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
 
@@ -288,7 +289,7 @@ def get_text_from_db():
 	#---------------------------------------------------------------------------------------------------------------------------------
 	## onboarding bot
 
-	bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, in_group_id=config.OPENNING_INDEX, texts={topics.GENERAL:[["Hi! I\'m Onboarding-Bot!", "I\'m here to introduce you to all my friends!", "We are here to help you with stress."]]}, next_id=0)
+	bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, in_group_id=config.OPENNING_INDEX, texts={topics.GENERAL:[["Hi! I\'m Onboarding-Bot!", "I\'m here to introduce you to all my friends!", "We are here to help you with stress.", "Do you want to hear the introduction?"]]}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 0)])
 	
 	tmp_text = [["I\'m here to give you a few pointers about how to interact with me and my friends.",  "First, we are only bots. We strive to do our best to understand you, and you will get more from us if you are able to give more than a yes or no answer to our questions. ", 
 				"We bots are also pretty new, which means that we are still learning.", "Right now it\'s important for us that you respond to each question in one message block.", "Feel free to hit return to add multiple paragraphs but only press send once you have expressed what you want to share. It\'s okay if you forget, we might just get a bit confused", 
@@ -298,9 +299,9 @@ def get_text_from_db():
 	
 	bot_texts[7][0] = Reply(bot_id=7, in_group_id=0, texts={topics.GENERAL:tmp_text}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
 	del tmp_text
-	bot_texts[7][1] = Reply(bot_id=7, in_group_id=1, texts={topics.GENERAL:[["Please email our tech team. If you have any questions on the above. We would love to assist you."]]}, next_id=3)
-	bot_texts[7][2] = Reply(bot_id=7, in_group_id=2, texts={topics.GENERAL:[["Awesome!", "What chatbot would you like to meet first?"]]}, next_id=config.CLOSING_INDEX)
-	bot_texts[7][3] = Reply(bot_id=7, in_group_id=3, texts={topics.GENERAL:[["What chatbot would you like to meet first?"]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[7][1] = Reply(bot_id=7, in_group_id=1, texts={topics.GENERAL:[["Please email our tech team. If you have any questions on the above. We would love to assist you. Ok?"]]}, next_id=2)
+	bot_texts[7][2] = Reply(bot_id=7, in_group_id=2, texts={topics.GENERAL:[["Awesome!", "May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
+	#bot_texts[7][3] = Reply(bot_id=7, in_group_id=3, texts={topics.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
 
 
 

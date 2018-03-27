@@ -52,7 +52,7 @@ class StressBot(Client):
 		if thread_id in self.user_history and len(self.user_history[thread_id]) > 0:
 			return self.user_history[thread_id].pop()
 
-	def delete_all_dict(self, thread_id, delete_name=True):
+	def delete_all_dict(self, thread_id, delete_name=False):
 		if thread_id in self.user_bot_dict:
 			del self.user_bot_dict[thread_id]
 		if thread_id in self.user_topic_dict:
@@ -97,7 +97,7 @@ class StressBot(Client):
 					or len(self.user_history[thread_id][-1][-1]) < 2 \
 						or self.user_history[thread_id][-1][-1][1] == self.config.CLOSING_INDEX:
 							_bot_choice = self.user_bot_dict[thread_id] if thread_id in self.user_bot_dict else self.params.BOT_CHOICE
-							bot_id = random.randint(0, self.params.BOT_NUM-1) if _bot_choice == -1 else _bot_choice
+							bot_id = random.randint(0, self.params.BOT_NUM-1-1) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
 							query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
 							if self.db.user.find({'name': query_name}).count() == 0:
 								bot_id = onboarding_id
@@ -128,7 +128,7 @@ class StressBot(Client):
 				if whether_return:
 					return None
 
-			if current_id == self.config.START_INDEX:
+			if current_id == self.config.START_INDEX or (current_id == 2 and bot_id == self.params.BOT_NUM-1):
 				for each in ['i am', 'i\'m', 'this is', 'name is']:
 					_index = msg.lower().find(each)
 					if _index != -1:
@@ -138,6 +138,9 @@ class StressBot(Client):
 							result = result.replace(each_punc,"")
 						if len(result) > 0 and len(result) < 20:
 							self.user_name_dict[thread_id] = result
+
+			if current_id == 2 and bot_id == self.params.BOT_NUM-1:
+				self.user_name_dict[thread_id] = msg.lower().split()[0]
 
 			if current_id == self.config.OPENNING_INDEX and any(map(lambda x: x != -1, [msg.lower().find(each) for each in ['nothing', 'not now', 'don\'t know']])):
 				next_id = self.config.DK_INDEX

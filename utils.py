@@ -34,6 +34,7 @@ class Config:
 		self.CLOSING_INDEX = -2
 		self.START_INDEX = -3
 		self.DK_INDEX = -4
+		self.ARE_YOU_DONE_INDEX = -5
 
 
 		self.DEFAULT_YES = "__YES__"
