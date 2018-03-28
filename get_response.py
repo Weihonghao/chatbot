@@ -23,7 +23,7 @@ def get_text_from_db():
 	for i in range(params.BOT_NUM):
 		bot_texts[i][config.START_INDEX] = Reply(bot_id=i, in_group_id=config.START_INDEX, texts={topics.GENERAL:[["START_OF_CONVERSATION"]]}, next_id=-1)
 		bot_texts[i][config.OPENNING_INDEX] = Reply(bot_id=i, in_group_id=config.OPENNING_INDEX, texts={topics.GENERAL:openning}, next_id=config.ARE_YOU_DONE_INDEX)
-		bot_texts[i][config.ARE_YOU_DONE_INDEX] = Reply(bot_id=i, in_group_id=config.ARE_YOU_DONE_INDEX, texts={topics.GENERAL:[["Are you done? If so, please tell me. Otherwise, please go on."]]}, next_id=[(config.DEFAULT_NO, config.ARE_YOU_DONE_INDEX), (config.DEFAULT_OTHERS, 0)])
+		bot_texts[i][config.ARE_YOU_DONE_INDEX] = Reply(bot_id=i, in_group_id=config.ARE_YOU_DONE_INDEX, texts={topics.GENERAL:[["Are you done?"]]}, next_id=[(config.DEFAULT_NO, config.ARE_YOU_DONE_INDEX), (config.DEFAULT_OTHERS, 0)])
 		bot_texts[i][config.CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.CLOSING_INDEX, texts={topics.GENERAL:closing}, next_id=None)
 		bot_texts[i][config.DK_INDEX] = Reply(bot_id=i, in_group_id=config.DK_INDEX, texts={topics.GENERAL:dk_check_at_begining}, next_id=[(config.DEFAULT_DK, config.DK_INDEX), (config.DEFAULT_NO, config.CLOSING_INDEX), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
 
@@ -212,9 +212,9 @@ def get_text_from_db():
 	## Humor bot
 	bot_texts[3][0] = Reply(bot_id=3, in_group_id=0, texts={topics.GENERAL:[["Ok, can you give me more detail about this event?"]]}, next_id=1)
 	bot_texts[3][1] = Reply(bot_id=3, in_group_id=1, texts={topics.GENERAL:[["Thank you for sharing.", "That does sound stressful.", "Ok, let\'s try looking at this situation in a different light.", "I want you to take a few minutes to come up with a joke about this situation", " Would you like an example?"]]}, next_id=[(config.DEFAULT_NO, 3), (config.DEFAULT_OTHERS, 2)])
-	bot_texts[3][2] = Reply(bot_id=3, in_group_id=2, texts={topics.GENERAL:[["For example, if you are stuck, helping people out constantly, you might come up with the following joke:", "Why do French people eat snails?", "Because they don\'t like fast food.", "Don\'t worry about it being the best joke, just find something humorous about your situation.", "Can you please tell me your joke!"]]}, next_id=3)
+	bot_texts[3][2] = Reply(bot_id=3, in_group_id=2, texts={topics.GENERAL:[["For example, if you are hungry, and you are stuck in traffic", "Why do French people eat snails?", "Because they don\'t like fast food.", "Don\'t worry about it being the best joke, just find something humorous about your situation.", "Can you please tell me your joke!"]]}, next_id=3)
 	bot_texts[3][3] = Reply(bot_id=3, in_group_id=3, texts={topics.GENERAL:[["Haha that\'s true.", "Oftentimes finding the humor in stressful situations can help diffuse some tension."], ["Good joke!", "Sometimes there are good things that happen even if the situation isn\'t the best. "], ["Heehee! You\'re funny!", "Humor can be found in many situations"]]}, next_id=4)
-	bot_texts[3][4] = Reply(bot_id=3, in_group_id=4, texts={topics.GENERAL:[["Did that help you to find something good (or at least funny) about the situation?"]]}, next_id=[(config.DEFAULT_YES, 5), (config.DEFAULT_OTHERS, 6)])
+	bot_texts[3][4] = Reply(bot_id=3, in_group_id=4, texts={topics.GENERAL:[["Did that help you to find something good (or at least funny) about the situation?"]]}, next_id=[(config.DEFAULT_NO, 6), (config.DEFAULT_OTHERS, 5)])
 	bot_texts[3][5] = Reply(bot_id=3, in_group_id=5, texts={topics.GENERAL:[["I\'m glad. Would you consider trying this strategy, such as finding a joke, in the future?"]]}, next_id=config.CLOSING_INDEX)
 	bot_texts[3][6] = Reply(bot_id=3, in_group_id=6, texts={topics.GENERAL:[["That\'s ok, humor isn\'t always the answer.", "Just remember that trying to find something funny about your situation can help lighten the mood when you're stressed.", "Sound good?"]]}, next_id=config.CLOSING_INDEX)
 
