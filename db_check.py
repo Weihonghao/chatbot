@@ -143,7 +143,8 @@ if __name__ == "__main__":
 			print usage_tips
 			sys.exit()
 
-	
+
+	# db = pymongo_client.chatbot
 	pprint.pprint(get_all_users(db))
 	#get_user_history(db, '100000019168085')
 	get_name_userid_pairs(db)
