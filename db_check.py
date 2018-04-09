@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import pprint
 import datetime, time
+import sys, getopt
 from pymongo import MongoClient
 from get_response import get_text_from_db
 from collections import defaultdict
@@ -41,18 +42,14 @@ def get_time_interval(start_time, end_time):
 
 
 
-def get_all_users():
-	pymongo_client = MongoClient()
-	db = pymongo_client.chatbot
+def get_all_users(db):
 	collection = db.user_history
 	name_set = set()
 	for each in collection.find():
 		name_set.add(each['thread_id'])
 	return list(name_set)
 
-def get_user_history(thread_id, start_time=-1, end_time=-1):
-	pymongo_client = MongoClient()
-	db = pymongo_client.chatbot
+def get_user_history(db, thread_id, start_time=-1, end_time=-1):
 	collection = db.user_history
 	out = open('output/user_history.txt','w')
 	reply_dict = get_text_from_db()
@@ -67,8 +64,8 @@ def get_user_history(thread_id, start_time=-1, end_time=-1):
 			timestamp = datetime.datetime.fromtimestamp(int(each_round[5])).strftime('%c')
 			print(each_round[5], timestamp)
 			out.write('{}:\n'.format(timestamp))
-			for each_sentence in reply_dict[each_round[0]][each_round[1]].texts[each_round[3]][each_round[2]]:
-				each_sentence = each_sentence.replace("’","'")
+			for each_sentence in each_round[3]:#reply_dict[each_round[0]][each_round[1]].texts[each_round[3]][each_round[2]]:
+				# each_sentence = each_sentence.replace("’","'")
 				out.write("BOT: {}\n".format(each_sentence))
 			out.write("USER:{}\n".format(each_round[4]))
 		out.write('==================================\n')
@@ -76,9 +73,7 @@ def get_user_history(thread_id, start_time=-1, end_time=-1):
 	out.close()
 
 
-def get_name_userid_pairs():
-	pymongo_client = MongoClient()
-	db = pymongo_client.chatbot
+def get_name_userid_pairs(db):
 	collection = db.user
 	out = open('output/name_userid_pairs.txt','w')
 	out.write('user_id name\n')
@@ -87,9 +82,8 @@ def get_name_userid_pairs():
 	out.close()
 
 
-def date_report(start_time=-1, end_time=-1, weekday=()):
-	pymongo_client = MongoClient()
-	db = pymongo_client.chatbot
+def date_report(db, start_time=-1, end_time=-1, weekday=()):
+	# weekday start from Monday, Monday is 0
 	collection = db.user_history
 	reply_dict = get_text_from_db()
 	start_time_formatted, end_time_formatted = get_time_interval(start_time, end_time)
@@ -130,8 +124,28 @@ def date_report(start_time=-1, end_time=-1, weekday=()):
 	out.close()
 
 if __name__ == "__main__":
-	pprint.pprint(get_all_users())
-	#get_user_history('100000019168085')
-	get_name_userid_pairs()
-	get_user_history('100000019168085', start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 2, 1, 0, 10, 0))
-	date_report(start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 2, 1, 11, 40, 0), weekday=[2])
+
+	usage_tips = 'python db_check.py --mode MODE'
+	try:
+		opts, args = getopt.getopt(sys.argv[1:],'',['mode='])
+	except getopt.GetoptError:
+		print usage_tips
+		sys.exit()
+
+	pymongo_client = MongoClient()
+	db = pymongo_client.textbot
+
+	for opt, arg in opts:
+		if opt == '--mode':
+			if str(arg) == 'voice':
+				db = pymongo_client.voicebot
+		else:
+			print usage_tips
+			sys.exit()
+
+	
+	pprint.pprint(get_all_users(db))
+	#get_user_history(db, '100000019168085')
+	get_name_userid_pairs(db)
+	get_user_history(db, '100000019168085', start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 5, 1, 0, 10, 0))
+	date_report(db, start_time=(2018, 1, 19, 0, 10, 0), end_time=(2018, 5, 1, 11, 40, 0), weekday=[0])

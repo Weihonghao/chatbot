@@ -6,6 +6,7 @@ import string
 import nltk
 import enchant
 from rake_nltk import Rake
+from enum import Enum
 
 from collections import *
 r = Rake()
@@ -16,6 +17,7 @@ class Params:
 		self.SLEEPING_TIME = sleeping_time
 		self.ABTEST_CHOICE = abtest_choice #   -1 random choice, > -1, the index of selected reply
 		self.BOT_CHOICE = bot_choice # -1 random, 0 worse case bot, 1 problem solving bot, 2 positive thining bot
+		self.MODE = Modes.TEXT
 		assert self.BOT_CHOICE < self.BOT_NUM, 'Bot_num: {}, Bot_choice: {}'.format(self.BOT_NUM, self.BOT_CHOICE)
 		self.bot_name_list = ['doom bot', 'sherlock bot', 'glass-half-full bot', 'Sir Laughs-a-bot', 'chill bot', 'treat yourself bot', 'dunno bot', 'onboarding bot']
 		self.bot_tech_name_list = ['worst case', 'problem solving', 'positive thinking', 'humor', 'relaxation', 'self love', 'distraction', 'introduce']
@@ -26,6 +28,12 @@ class Params:
 	def set_bot_choice(self, bot_choice):
 		self.BOT_CHOICE = bot_choice
 		assert self.BOT_CHOICE < self.BOT_NUM, 'Bot_num: {}, Bot_choice: {}'.format(self.BOT_NUM, self.BOT_CHOICE)
+
+	def set_mode(self, mode):
+		if mode == 'text':
+			self.MODE = Modes.TEXT
+		elif mode == 'voice':
+			self.MODE = Modes.VOICE
 
 
 class Config:
@@ -42,14 +50,22 @@ class Config:
 		self.DEFAULT_DK = "__DK__"
 		self.DEFAULT_OTHERS = "__OTHERS__"
 
-class Topics:
-	def __init__(self):
-		self.GENERAL = 'general'
-		self.TRAFFIC = 'traffic'
-		self.TIRED = 'tired'
-		self.LATE = 'late'
-		self.DRIVER = 'driver'
-		self.VEHICLE = 'vehicle'
+# class Topics:
+# 	def __init__(self):
+# 		self.GENERAL = 'general'
+# 		# self.TRAFFIC = 'traffic'
+# 		# self.TIRED = 'tired'
+# 		# self.LATE = 'late'
+# 		# self.DRIVER = 'driver'
+# 		# self.VEHICLE = 'vehicle'
+# 		self.TEXT = 'text'
+# 		self.VOICE = 'voice'
+
+class Modes(Enum):
+	GENERAL = 'general'
+	TEXT = 'text'
+	VOICE = 'voice'
+
 
 
 class Reply:
@@ -71,13 +87,13 @@ def always_true(*args):
 	return True
 
 
-def find_topic(problem):
-	topics = Topics()
-	topic_list = [topics.TIRED, topics.LATE, topics.DRIVER, topics.VEHICLE, topics.TRAFFIC]
-	for topic in topic_list:
-		if topic in problem:
-			return topic
-	return topics.GENERAL
+# def find_topic(problem):
+# 	topics = Topics()
+# 	topic_list = [topics.TIRED, topics.LATE, topics.DRIVER, topics.VEHICLE, topics.TRAFFIC]
+# 	for topic in topic_list:
+# 		if topic in problem:
+# 			return topic
+# 	return topics.GENERAL
 
 # def find_problem(input_str):
 # 	topics = Topics()

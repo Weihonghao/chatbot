@@ -19,20 +19,18 @@ from gtts import gTTS
 onboarding_id = 7
 
 class StressBot(Client):
-	def __init__(self, email, password, reply_dict, mongo_db, voice_choice=False, **kwargs):
+	def __init__(self, email, password, reply_dict, voice_choice=False, **kwargs):
 		Client.__init__(self, email, password)
 		self.user_history = defaultdict(list)
 		# self.user_history {thread_id: [[(bot_id, in_group_id, ab_test_id, msg, user_response_time), () ....], [], [], ...]}
 		self.reply_dict = reply_dict
 		self.user_name_dict = {}
 		self.user_bot_dict = {}
-		self.user_topic_dict = {}
 		self.user_problem_dict = {}
 		self.params = Params()
 		self.config = Config()
-		self.topics = Topics()
 
-		self.db = mongo_db
+		
 		self.voice_choice = voice_choice
 
 		additional_bot_control = kwargs.get('add_bot_ctl',{})
@@ -41,6 +39,14 @@ class StressBot(Client):
 
 		if 'bot_choice' in additional_bot_control:
 			self.params.set_bot_choice(additional_bot_control.get('bot_choice'))
+
+		if 'mode' in additional_bot_control:
+			self.params.set_mode(additional_bot_control.get('mode', 'text'))
+
+		if self.params.MODE == Modes.TEXT:
+			self.db = MongoClient().textbot
+		else:
+			self.db = MongoClient().voicebot
 
 
 	def say(self, text):
@@ -55,8 +61,6 @@ class StressBot(Client):
 	def delete_all_dict(self, thread_id, delete_name=False):
 		if thread_id in self.user_bot_dict:
 			del self.user_bot_dict[thread_id]
-		if thread_id in self.user_topic_dict:
-			del self.user_topic_dict[thread_id]
 		if thread_id in self.user_problem_dict:
 			del self.user_problem_dict[thread_id]
 		if delete_name and  thread_id in self.user_name_dict:
@@ -79,15 +83,15 @@ class StressBot(Client):
 				msg = ' '.join(msg.split()) # substitute multiple spaces into one
 				if msg[-1] in list(string.punctuation):
 					msg = msg[:-1]
-				if not chcek_rubbish_word(msg):
-					reply_text = "Sorry I didn't get that. Could you repeat yourself?"
-					self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
-					if self.voice_choice:
-						#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
-						self.say(reply_text.replace("(", " ").replace(")", " "))
-					if not self.voice_choice:
-						time.sleep(self.params.SLEEPING_TIME)
-					return None
+				# if not chcek_rubbish_word(msg):
+				# 	reply_text = "Sorry I didn't get that. Could you repeat yourself?"
+				# 	self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
+				# 	if self.voice_choice:
+				# 		#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
+				# 		self.say(reply_text.replace("(", " ").replace(")", " "))
+				# 	if not self.voice_choice:
+				# 		time.sleep(self.params.SLEEPING_TIME)
+				# 	return None
 
 				if msg.strip().lower() == 'restart':
 					self.clean_last_record(thread_id)
@@ -103,15 +107,15 @@ class StressBot(Client):
 								query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
 								if self.db.user.find({'name': query_name}).count() == 0:
 									bot_id = onboarding_id
-								self.user_history[thread_id].append([(bot_id, self.config.START_INDEX, 0)])
-				bot_id, current_id, _ = self.user_history[thread_id][-1][-1]
+								self.user_history[thread_id].append([(bot_id, self.config.START_INDEX, 0, ["START_OF_CONVERSATION"])])
+				bot_id, current_id, _, _ = self.user_history[thread_id][-1][-1]  # ab_id, questions
+				# self.user_history stores [(bot_id, current_id, ab_test, questions (list of texts), user_answer, timestamp)]
 				next_id = self.reply_dict[bot_id][current_id].next_id
 
 
 				if current_id == self.config.OPENNING_INDEX and  find_problem(msg) != None:
-					self.user_problem_dict[thread_id], self.user_topic_dict[thread_id] = find_problem(msg), Topics().GENERAL
+					self.user_problem_dict[thread_id] = find_problem(msg)
 				problem = self.user_problem_dict.get(thread_id, 'that')
-				topic = self.user_topic_dict.get(thread_id, self.topics.GENERAL)
 
 				if msg.strip().lower() == 'change bot' or msg.strip().lower() in self.params.bot_tech_name_list:
 					whether_return = bot_id != onboarding_id
@@ -185,21 +189,24 @@ class StressBot(Client):
 					self.clean_last_record(thread_id)
 					raise ValueError
 
-				self.user_history[thread_id][-1][-1] += (topic, msg, user_response_time,)
+				self.user_history[thread_id][-1][-1] += (msg, user_response_time,)
 				
-				next_texts = self.reply_dict[bot_id][next_id].texts.get(topic, self.reply_dict[bot_id][next_id].texts[self.topics.GENERAL])
+				next_texts = self.reply_dict[bot_id][next_id].texts.get(self.params.MODE, self.reply_dict[bot_id][next_id].texts[Modes.GENERAL])
 				ab_test_index = random.randint(0, len(next_texts)-1) if self.params.ABTEST_CHOICE == -1 else min(len(next_texts)-1, self.params.ABTEST_CHOICE)
 				self.user_history[thread_id][-1].append((bot_id, next_id, ab_test_index))
-				# if not self.voice_choice:
-				# 	time.sleep(self.params.SLEEPING_TIME)
+
+				reply_texts = []
 				for each in next_texts[ab_test_index]:
 					reply_text = each.format(name=user_name, problem=problem, bot_name=self.params.bot_name_list[bot_id])
+					reply_texts.append(reply_text)
 					self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
 					if self.voice_choice:
 						#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
 						self.say(reply_text.replace("(", " ").replace(")", " "))
 					else:
 						time.sleep(self.params.SLEEPING_TIME)
+
+				self.user_history[thread_id][-1][-1] += (reply_texts,)
 
 				if next_id == self.config.CLOSING_INDEX:
 
@@ -213,7 +220,7 @@ class StressBot(Client):
 							)
 
 
-					self.user_history[thread_id][-1][-1] += (topic, 'END_OF_CONVERSATION', user_response_time,)
+					self.user_history[thread_id][-1][-1] += ('END_OF_CONVERSATION', user_response_time,)
 
 					self.db.user_history.insert(
 							{
@@ -234,9 +241,9 @@ class StressBot(Client):
 
 
 if __name__ == "__main__":
-	usage_tips = 'python bot.py --voice'
+	usage_tips = 'python bot.py --voice --stime SLEEPINGTIME --mode MODE'
 	try:
-		opts, args = getopt.getopt(sys.argv[1:],'',["voice", 'stime=', 'bot='])
+		opts, args = getopt.getopt(sys.argv[1:],'',["voice", 'stime=', 'bot=', 'mode='])
 	except getopt.GetoptError:
 		print usage_tips
 		sys.exit()
@@ -250,12 +257,12 @@ if __name__ == "__main__":
 			add_bot_ctl['sleeping_time'] = int(arg)
 		elif opt == '--bot':
 			add_bot_ctl['bot_choice'] = int(arg)
+		elif opt == '--mode':
+			add_bot_ctl['mode'] = str(arg)
 		else:
 			print usage_tips
 			sys.exit()
 
-	pymongo_client = MongoClient()
-	db = pymongo_client.chatbot
 	#collection = db.user_history
 
 	reply_dict = get_text_from_db()
@@ -268,5 +275,5 @@ if __name__ == "__main__":
 	password = password_file.readline().strip()
 	print('email: {},  password: {}'.format(email, password))
 
-	client = StressBot(email, password, reply_dict, db, voice_choice, add_bot_ctl=add_bot_ctl)
+	client = StressBot(email, password, reply_dict, voice_choice, add_bot_ctl=add_bot_ctl)
 	client.listen()
