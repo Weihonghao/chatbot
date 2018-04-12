@@ -6,7 +6,7 @@ PopBots are a family of quick three to 5 minutes conversation bots that represen
 
 - **doom bot** - helps in seeing that while times may get tough, everyone is 
 
-- **sherlock bot **- helps you to brainstorm a solution
+- **sherlock bot**- helps you to brainstorm a solution
 
 - **glass-half-full bot** - helps to brainstorm some positives about the situation
 
