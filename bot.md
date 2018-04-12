@@ -35,3 +35,5 @@ To start talking with a bot, say hello and a bot will introduce themselves. They
 7. If you have any questions or concerns, please email stressbotcommuter@gmail.com.
 
 9. If at any point you feel unsafe while chatting, please call 911. We understand that sometimes stress can be a lot, and chatbots are not meant to replace humans, but rather support people in different ways.
+
+Thank you very much.
