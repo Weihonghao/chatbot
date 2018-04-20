@@ -101,13 +101,14 @@ class StressBot(Client):
 				if thread_id not in self.user_history or len(self.user_history[thread_id]) == 0 \
 					or len(self.user_history[thread_id][-1]) == 0 \
 						or len(self.user_history[thread_id][-1][-1]) < 2 \
-							or self.user_history[thread_id][-1][-1][1] == self.config.CLOSING_INDEX:
-								_bot_choice = self.user_bot_dict[thread_id] if thread_id in self.user_bot_dict else self.params.BOT_CHOICE
-								bot_id = random.randint(0, self.params.BOT_NUM-1-1) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
-								query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
-								if self.db.user.find({'name': query_name}).count() == 0:
-									bot_id = onboarding_id
-								self.user_history[thread_id].append([(bot_id, self.config.START_INDEX, 0, ["START_OF_CONVERSATION"])])
+							or self.user_history[thread_id][-1][-1][1] == self.config.CLOSING_INDEX\
+								or self.user_history[thread_id][-1][-1][1] == self.config.ABRUPT_CLOSING_INDEX:
+									_bot_choice = self.user_bot_dict[thread_id] if thread_id in self.user_bot_dict else self.params.BOT_CHOICE
+									bot_id = random.randint(0, self.params.BOT_NUM-1-1) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
+									query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
+									if self.db.user.find({'name': query_name}).count() == 0:
+										bot_id = onboarding_id
+									self.user_history[thread_id].append([(bot_id, self.config.START_INDEX, 0, ["START_OF_CONVERSATION"])])
 				bot_id, current_id, _, _ = self.user_history[thread_id][-1][-1]  # ab_id, questions
 				# self.user_history stores [(bot_id, current_id, ab_test, questions (list of texts), user_answer, timestamp)]
 				next_id = self.reply_dict[bot_id][current_id].next_id
@@ -208,7 +209,7 @@ class StressBot(Client):
 
 				self.user_history[thread_id][-1][-1] += (reply_texts,)
 
-				if next_id == self.config.CLOSING_INDEX:
+				if next_id == self.config.CLOSING_INDEX or next_id == self.config.ABRUPT_CLOSING_INDEX:
 
 					query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
 					if self.db.user.find({'name': query_name}).count() == 0:

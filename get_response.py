@@ -22,10 +22,12 @@ def get_text_from_db():
 	bot_texts = defaultdict(dict)
 	for i in range(params.BOT_NUM):
 		bot_texts[i][config.START_INDEX] = Reply(bot_id=i, in_group_id=config.START_INDEX, texts={modes.GENERAL:[["START_OF_CONVERSATION"]]}, next_id=-1)
-		bot_texts[i][config.OPENNING_INDEX] = Reply(bot_id=i, in_group_id=config.OPENNING_INDEX, texts={modes.GENERAL:openning}, next_id=config.ARE_YOU_DONE_INDEX)
-		bot_texts[i][config.ARE_YOU_DONE_INDEX] = Reply(bot_id=i, in_group_id=config.ARE_YOU_DONE_INDEX, texts={modes.GENERAL:[["Are you done?"]]}, next_id=[(config.DEFAULT_NO, config.ARE_YOU_DONE_INDEX), (config.DEFAULT_OTHERS, 0)])
+		bot_texts[i][config.OPENNING_INDEX] = Reply(bot_id=i, in_group_id=config.OPENNING_INDEX, texts={modes.GENERAL:openning}, next_id=[(config.DEFAULT_DK, config.ARE_YOU_DONE_INDEX), (config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, config.ARE_YOU_DONE_INDEX)])
+		bot_texts[i][config.ARE_YOU_DONE_INDEX] = Reply(bot_id=i, in_group_id=config.ARE_YOU_DONE_INDEX, texts={modes.GENERAL:[["Are you done?"]]}, next_id=[(config.DEFAULT_NO, config.CONTINUE_INDEX), (config.DEFAULT_OTHERS, 0)])
+		bot_texts[i][config.CONTINUE_INDEX] = Reply(bot_id=i, in_group_id=config.CONTINUE_INDEX, texts={modes.GENERAL:[["Please continue."]]}, next_id=config.ARE_YOU_DONE_INDEX)
 		bot_texts[i][config.CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.CLOSING_INDEX, texts={modes.GENERAL:closing}, next_id=None)
 		bot_texts[i][config.DK_INDEX] = Reply(bot_id=i, in_group_id=config.DK_INDEX, texts={modes.GENERAL:dk_check_at_begining}, next_id=[(config.DEFAULT_DK, config.DK_INDEX), (config.DEFAULT_NO, config.CLOSING_INDEX), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
+		bot_texts[i][config.ABRUPT_CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.ABRUPT_CLOSING_INDEX, texts={modes.GENERAL:[["I understand if you don't feel like talking right now.", "You can always tell to me when you are ready."]]}, next_id=None)
 
 	bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, in_group_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Nice to meet you {name}. I hope we can help you when you need it."]]}, next_id=None)
 
@@ -125,7 +127,7 @@ def get_text_from_db():
 	# tmp_text[topics.LATE] = [["Have you ever found a way to avoid being late in the past that worked well?"]]
 	# tmp_text[topics.DRIVER] = [["Have you ever dealt with this problem or something similar before?"]]
 	# tmp_text[topics.VEHICLE] = [["Have you ever experienced this problem before?"]]
-	bot_texts[1][4] = Reply(bot_id=1, in_group_id=4, texts=tmp_text, next_id=[(config.DEFAULT_YES, 5), (config.DEFAULT_NO, 6), (config.DEFAULT_OTHERS, 6)])
+	bot_texts[1][4] = Reply(bot_id=1, in_group_id=4, texts=tmp_text, next_id=[(config.DEFAULT_NO, 6), (config.DEFAULT_YES, 5), (config.DEFAULT_DK, 6), (config.DEFAULT_OTHERS, 6)])
 	del tmp_text
 
 
@@ -212,7 +214,8 @@ def get_text_from_db():
 	#---------------------------------------------------------------------------------------------------------------------------------
 	## Humor bot
 	bot_texts[3][0] = Reply(bot_id=3, in_group_id=0, texts={modes.GENERAL:[["Ok, can you give me more detail about this event?"]]}, next_id=1)
-	bot_texts[3][1] = Reply(bot_id=3, in_group_id=1, texts={modes.GENERAL:[["Thank you for sharing.", "That does sound stressful.", "Ok, let\'s try looking at this situation in a different light.", "I want you to take a few minutes to come up with a joke about this situation", " Would you like an example?"]]}, next_id=[(config.DEFAULT_NO, 3), (config.DEFAULT_OTHERS, 2)])
+	bot_texts[3][1] = Reply(bot_id=3, in_group_id=1, texts={modes.GENERAL:[["Thank you for sharing.", "That does sound stressful.", "Ok, let\'s try looking at this situation in a different light.", "I want you to take a few minutes to come up with a joke about this situation", " Would you like an example?"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 2)])
+	bot_texts[3][7] = Reply(bot_id=3, in_group_id=7, texts={modes.GENERAL:[["Go for it!"]]}, next_id=3)
 	bot_texts[3][2] = Reply(bot_id=3, in_group_id=2, texts={modes.GENERAL:[["For example, if you are hungry, and you are stuck in traffic", "This might be a good joke.", "Why do French people eat snails?", "Because they don\'t like fast food.", "Don\'t worry about it being the best joke, just find something humorous about your situation.", "Can you please tell me your joke!"]]}, next_id=3)
 	bot_texts[3][3] = Reply(bot_id=3, in_group_id=3, texts={modes.GENERAL:[["Haha that\'s true.", "Oftentimes finding the humor in stressful situations can help diffuse some tension."], ["Good joke!", "Sometimes there are good things that happen even if the situation isn\'t the best. "], ["Heehee! You\'re funny!", "Humor can be found in many situations"]]}, next_id=4)
 	bot_texts[3][4] = Reply(bot_id=3, in_group_id=4, texts={modes.GENERAL:[["Did that help you to find something good (or at least funny) about the situation?"]]}, next_id=[(config.DEFAULT_NO, 6), (config.DEFAULT_OTHERS, 5)])
@@ -239,7 +242,8 @@ def get_text_from_db():
 	bot_texts[4][10] = Reply(bot_id=4, in_group_id=10, texts={modes.GENERAL:[["Take 5 deep breaths while focusing on you surroundings."]]}, next_id=12)
 	bot_texts[4][12] = Reply(bot_id=4, in_group_id=12, texts={modes.GENERAL:[["Would you like to repeat the exercise?"]]}, next_id=[(config.DEFAULT_NO, 13), (config.DEFAULT_OTHERS, 3)])
 
-	bot_texts[4][13] = Reply(bot_id=4, in_group_id=13, texts={modes.GENERAL:[["Oftentimes, taking a moment to be mindful may help you in situations when you are feeling stressed.", "Sounds good?"]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[4][13] = Reply(bot_id=4, in_group_id=13, texts={modes.GENERAL:[["Oftentimes, taking a moment to be mindful may help you in situations when you are feeling stressed.", "Sounds good?"]]}, next_id=[(config.DEFAULT_NO, 14), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
+	bot_texts[4][14] = Reply(bot_id=4, in_group_id=14, texts={modes.GENERAL:[["That\'s ok. There are many other ways to deal with stress."]]}, next_id=config.CLOSING_INDEX)
 	#---------------------------------------------------------------------------------------------------------------------------------
 	## self-love bot
 
