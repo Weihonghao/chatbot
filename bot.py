@@ -196,6 +196,8 @@ class StressBot(Client):
 				ab_test_index = random.randint(0, len(next_texts)-1) if self.params.ABTEST_CHOICE == -1 else min(len(next_texts)-1, self.params.ABTEST_CHOICE)
 				self.user_history[thread_id][-1].append((bot_id, next_id, ab_test_index))
 
+				self.changeThreadColor(self.params.bot_color_list[self.user_history[thread_id][-1][-1][0]], thread_id=thread_id)
+
 				reply_texts = []
 				for each in next_texts[ab_test_index]:
 					reply_text = each.format(name=user_name, problem=problem, bot_name=self.params.bot_name_list[bot_id])

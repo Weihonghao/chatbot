@@ -8,6 +8,9 @@ import enchant
 from rake_nltk import Rake
 from enum import Enum
 
+from fbchat import Client
+from fbchat.models import *
+
 from collections import *
 r = Rake()
 
@@ -21,6 +24,7 @@ class Params:
 		assert self.BOT_CHOICE < self.BOT_NUM, 'Bot_num: {}, Bot_choice: {}'.format(self.BOT_NUM, self.BOT_CHOICE)
 		self.bot_name_list = ['doom bot', 'sherlock bot', 'glass-half-full bot', 'Sir Laughs-a-bot', 'chill bot', 'treat yourself bot', 'dunno bot', 'onboarding bot']
 		self.bot_tech_name_list = ['worst case', 'problem solving', 'positive thinking', 'humor', 'relaxation', 'self love', 'distraction', 'introduce']
+		self.bot_color_list = [ThreadColor.BILOBA_FLOWER, ThreadColor.BRILLIANT_ROSE, ThreadColor.CAMEO, ThreadColor.DEEP_SKY_BLUE, ThreadColor.FERN, ThreadColor.PUMPKIN, ThreadColor.RADICAL_RED, ThreadColor.SHOCKING]
 
 	def set_sleeping_time(self, sleeping_time):
 		self.SLEEPING_TIME = sleeping_time
