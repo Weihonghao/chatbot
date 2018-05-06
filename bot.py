@@ -104,11 +104,15 @@ class StressBot(Client):
 							or self.user_history[thread_id][-1][-1][1] == self.config.CLOSING_INDEX\
 								or self.user_history[thread_id][-1][-1][1] == self.config.ABRUPT_CLOSING_INDEX:
 									_bot_choice = self.user_bot_dict[thread_id] if thread_id in self.user_bot_dict else self.params.BOT_CHOICE
-									bot_id = random.randint(0, self.params.BOT_NUM-1-1) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
+									# bot_id = random.randint(0, self.params.BOT_NUM-1-1) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
+									bot_id = random.choice(range(0, onboarding_id) + range(onboarding_id+1, self.params.BOT_NUM)) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
+									
 									query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
 									if self.db.user.find({'name': query_name}).count() == 0:
 										bot_id = onboarding_id
 									self.user_history[thread_id].append([(bot_id, self.config.START_INDEX, 0, ["START_OF_CONVERSATION"])])
+									if not self.voice_choice:
+										self.changeThreadColor(self.params.bot_color_list[self.user_history[thread_id][-1][-1][0]], thread_id=thread_id)
 				bot_id, current_id, _, _ = self.user_history[thread_id][-1][-1]  # ab_id, questions
 				# self.user_history stores [(bot_id, current_id, ab_test, questions (list of texts), user_answer, timestamp)]
 				next_id = self.reply_dict[bot_id][current_id].next_id
@@ -118,24 +122,28 @@ class StressBot(Client):
 					self.user_problem_dict[thread_id] = find_problem(msg)
 				problem = self.user_problem_dict.get(thread_id, 'that')
 
-				if msg.strip().lower() == 'change bot' or msg.strip().lower() in self.params.bot_tech_name_list:
+				#if msg.strip().lower() == 'change bot' or msg.strip().lower() in self.params.bot_tech_name_list:
+				if msg.strip().lower() in self.params.bot_tech_name_list:
 					whether_return = bot_id != onboarding_id
 					if whether_return:
 						self.clean_last_record(thread_id)
 					self.delete_all_dict(thread_id, delete_name=False)
-					if msg.strip().lower() == 'change bot':
-						while True:
-							tmp = random.randint(0, self.params.BOT_NUM-1)
-							if tmp != bot_id:
-								self.user_bot_dict[thread_id] = tmp
-								break
-					else:
-						self.user_bot_dict[thread_id] = self.params.bot_tech_name_list.index(msg.strip().lower())
+					# if msg.strip().lower() == 'change bot':
+					# 	while True:
+					# 		tmp = random.randint(0, self.params.BOT_NUM-1)
+					# 		if tmp != bot_id:
+					# 			self.user_bot_dict[thread_id] = tmp
+					# 			break
+					# else:
+					self.user_bot_dict[thread_id] = self.params.bot_tech_name_list.index(msg.strip().lower())
 					print(whether_return, bot_id)
 					if whether_return:
 						return None
 
-				if current_id == self.config.START_INDEX or (current_id == 2 and bot_id == self.params.BOT_NUM-1):
+				if current_id == 2 and bot_id == onboarding_id:
+					self.user_name_dict[thread_id] = msg.lower().split()[0]
+
+				if current_id == self.config.START_INDEX or (current_id == 2 and bot_id == onboarding_id):
 					for each in ['i am', 'i\'m', 'this is', 'name is']:
 						_index = msg.lower().find(each)
 						if _index != -1:
@@ -146,8 +154,6 @@ class StressBot(Client):
 							if len(result) > 0 and len(result) < 20:
 								self.user_name_dict[thread_id] = result
 
-				if current_id == 2 and bot_id == self.params.BOT_NUM-1:
-					self.user_name_dict[thread_id] = msg.lower().split()[0]
 
 				if current_id == self.config.OPENNING_INDEX and any(map(lambda x: x != -1, [msg.lower().find(each) for each in ['nothing', 'not now', 'don\'t know']])):
 					next_id = self.config.DK_INDEX
@@ -195,9 +201,6 @@ class StressBot(Client):
 				next_texts = self.reply_dict[bot_id][next_id].texts.get(self.params.MODE, self.reply_dict[bot_id][next_id].texts[Modes.GENERAL])
 				ab_test_index = random.randint(0, len(next_texts)-1) if self.params.ABTEST_CHOICE == -1 else min(len(next_texts)-1, self.params.ABTEST_CHOICE)
 				self.user_history[thread_id][-1].append((bot_id, next_id, ab_test_index))
-
-				if not self.voice_choice:
-					self.changeThreadColor(self.params.bot_color_list[self.user_history[thread_id][-1][-1][0]], thread_id=thread_id)
 
 				reply_texts = []
 				for each in next_texts[ab_test_index]:

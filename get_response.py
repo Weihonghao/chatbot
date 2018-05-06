@@ -22,7 +22,8 @@ def get_text_from_db():
 	bot_texts = defaultdict(dict)
 	for i in range(params.BOT_NUM):
 		bot_texts[i][config.START_INDEX] = Reply(bot_id=i, in_group_id=config.START_INDEX, texts={modes.GENERAL:[["START_OF_CONVERSATION"]]}, next_id=-1)
-		bot_texts[i][config.OPENNING_INDEX] = Reply(bot_id=i, in_group_id=config.OPENNING_INDEX, texts={modes.GENERAL:openning}, next_id=[(config.DEFAULT_DK, config.ARE_YOU_DONE_INDEX), (config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, config.ARE_YOU_DONE_INDEX)])
+		# bot_texts[i][config.OPENNING_INDEX] = Reply(bot_id=i, in_group_id=config.OPENNING_INDEX, texts={modes.GENERAL:openning}, next_id=[(config.DEFAULT_DK, config.ARE_YOU_DONE_INDEX), (config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, config.ARE_YOU_DONE_INDEX)])
+		bot_texts[i][config.OPENNING_INDEX] = Reply(bot_id=i, in_group_id=config.OPENNING_INDEX, texts={modes.GENERAL:openning}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 0)])
 		bot_texts[i][config.ARE_YOU_DONE_INDEX] = Reply(bot_id=i, in_group_id=config.ARE_YOU_DONE_INDEX, texts={modes.GENERAL:[["Are you done?"]]}, next_id=[(config.DEFAULT_NO, config.CONTINUE_INDEX), (config.DEFAULT_OTHERS, 0)])
 		bot_texts[i][config.CONTINUE_INDEX] = Reply(bot_id=i, in_group_id=config.CONTINUE_INDEX, texts={modes.GENERAL:[["Please continue."]]}, next_id=config.ARE_YOU_DONE_INDEX)
 		bot_texts[i][config.CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.CLOSING_INDEX, texts={modes.GENERAL:closing}, next_id=None)
@@ -307,6 +308,70 @@ def get_text_from_db():
 	bot_texts[7][1] = Reply(bot_id=7, in_group_id=1, texts={modes.GENERAL:[["Please email our tech team. If you have any questions on the above. We would love to assist you. Ok?"]]}, next_id=2)
 	bot_texts[7][2] = Reply(bot_id=7, in_group_id=2, texts={modes.GENERAL:[["Awesome!", "May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
 	#bot_texts[7][3] = Reply(bot_id=7, in_group_id=3, texts={modes.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
+
+
+	#---------------------------------------------------------------------------------------------------------------------------------
+	## checkin bot
+
+	bot_texts[8][0] = Reply(bot_id=8, in_group_id=0, texts={modes.GENERAL:[["Hmm, that sounds pretty stressful.","I\'m not sure I can help you solve that probelm directly, but maybe we could check and see how it\'s affecting other aspects of your life.","Does that sound ok?"]]}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
+
+	#can we pass off to a bot friend?
+	bot_texts[8][1] =  Reply(bot_id=8, in_group_id=1, texts={modes.GENERAL:[["Okay, maybe I can introduce you to my other bot-friends?"]]}, next_id=config.CLOSING_INDEX)
+
+	bot_texts[8][2] = Reply(bot_id=8, in_group_id=2, texts={modes.GENERAL:[["Awesome, let\'s get started. Has this problem been affecting your sleep?"]]}, next_id=[(config.DEFAULT_NO, 3), (config.DEFAULT_OTHERS, 4)])
+
+	#{}
+	#no - good sleep +1
+	# {+1}
+	bot_texts[8][3] = Reply(bot_id=8, in_group_id=3, texts={modes.GENERAL:[["Ok, rockin! Yay sleep!","What about your eating habits? Has this problem prevented you from eating regularly?"]]}, next_id=[(config.DEFAULT_NO, 5), (config.DEFAULT_OTHERS, 6)])
+	#yes - bad sleep 0
+	# {0}
+	bot_texts[8][4] = Reply(bot_id=8, in_group_id=4, texts={modes.GENERAL:[["That\'s okay, sometimes sleep can be hard to schedule in. Everyone has times when they miss out on sleep.", "What about your eating habits? Has this problem prevented you from eating regularly?"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 8)])
+
+
+	#good sleep
+	#no - good food =2
+	#{1, 1}
+	bot_texts[8][5] = Reply(bot_id=8, in_group_id=5, texts={modes.GENERAL:[["I\'m glad to hear that.","One last question. Have you tried discussing this issue with your friends or family? They\'re the ones who often can help in a time like this."]]}, next_id=[(config.DEFAULT_NO, 10), (config.DEFAULT_OTHERS, 9)])
+	#yes - bad food =1
+	#{1, 0}
+	bot_texts[8][6] = Reply(bot_id=8, in_group_id=6, texts={modes.GENERAL:[["That can be tough, but I can tell that you are working hard and doing your best!","Have you tried discussing this issue with your friends or family? They\'re the ones who often can help in a time like this."]]}, next_id=[(config.DEFAULT_NO, 12), (config.DEFAULT_OTHERS, 11)])
+	
+	#bad sleep
+	#no - good food =1
+	#{0, 1}
+	bot_texts[8][7] = Reply(bot_id=8, in_group_id=7, texts={modes.GENERAL:[["I\'m glad to hear that.","One last question. Have you tried discussing this issue with your friends or family? They\'re the ones who often can help in a time like this."]]}, next_id=[(config.DEFAULT_NO, 14), (config.DEFAULT_OTHERS, 13)])
+	#yes - bad food =0
+	#{0, 0}
+	bot_texts[8][8] = Reply(bot_id=8, in_group_id=8, texts={modes.GENERAL:[["That can be tough, but I can tell that you are working hard and doing your best!","Have you tried discussing this issue with your friends or family? They\'re the ones who often can help in a time like this."]]}, next_id=[(config.DEFAULT_NO, 16), (config.DEFAULT_OTHERS, 15)])
+	
+	#Yes friends!
+	#good sleep
+	#good food = 3
+	#{1, 1, 1}
+	bot_texts[8][9] = Reply(bot_id=8, in_group_id=9, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this.","Wonderful, it seems as though this problem isn\'t affecting these three major aspects of your life. Great job staying on top of your sleeping and eating as well as reaching out to friends and family for support."]]}, next_id=config.CLOSING_INDEX)
+
+	#{sleep, eat, friends}
+	#{1, 1, 0}
+	bot_texts[8][10] = Reply(bot_id=8, in_group_id=10, texts={modes.GENERAL:[["I\'m sorry to hear that. Me and my bot-friends are always here to support you. ","Hey! Good job! It seems you\'ve got things mostly under control. It might be helpful to set aside some time reaching out to people you care about"]]}, next_id=config.CLOSING_INDEX)
+	
+	#{1, 0, 1}
+	bot_texts[8][11] = Reply(bot_id=8, in_group_id=11, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this.", "Hey! Good job! It seems you\'ve got things mostly under control. It might be helpful to set aside some time for eating"]]}, next_id=config.CLOSING_INDEX)
+	
+	#{1, 0, 0}
+	bot_texts[8][12] = Reply(bot_id=8, in_group_id=12, texts={modes.GENERAL:[["I\'m sorry to hear that. Me and my bot-friends are always here to support you. ","Great job on sleeping regularly! It could be helpful to focus on eating regularly and reaching out to people you care about."]]}, next_id=config.CLOSING_INDEX)
+	
+	#{0, 1, 1}
+	bot_texts[8][13] = Reply(bot_id=8, in_group_id=13, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this.","Hey! Good job! It seems you\'ve got things mostly under control. It might be helpful to set aside some time for sleeping."]]}, next_id=config.CLOSING_INDEX)
+	
+	#{0, 1, 0}
+	bot_texts[8][14] = Reply(bot_id=8, in_group_id=14, texts={modes.GENERAL:[["I\'m sorry to hear that. Me and my bot-friends are always here to support you. ","Great job on eating regularly! It might be helpful to focus on sleeping regularly and reaching out to people who care about you."]]}, next_id=config.CLOSING_INDEX)
+
+	#{0, 0, 1}
+	bot_texts[8][15] = Reply(bot_id=8, in_group_id=15, texts={modes.GENERAL:[["I\'m glad that you have been able to talk with friends and/or family about this.","Great job on reaching out to people who care about you! It could be helfpul to focus on sleeping regularly and eating regularly."]]}, next_id=config.CLOSING_INDEX)
+
+	#{0, 0, 0}
+	bot_texts[8][16] = Reply(bot_id=8, in_group_id=16, texts={modes.GENERAL:[["I\'m sorry to hear that. Me and my bot-friends are always here to support you. ","Hey I just want to say that things are going to get better. Hang in there tiger! Eating and sleeping regularly as well as reaching out to loved ones can be great places to start if you are feeling stressed."]]}, next_id=config.CLOSING_INDEX)	
 
 
 
