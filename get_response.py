@@ -30,8 +30,7 @@ def get_text_from_db():
 		# bot_texts[i][config.DK_INDEX] = Reply(bot_id=i, in_group_id=config.DK_INDEX, texts={modes.GENERAL:dk_check_at_begining}, next_id=[(config.DEFAULT_DK, config.DK_INDEX), (config.DEFAULT_NO, config.CLOSING_INDEX), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
 		# bot_texts[i][config.ABRUPT_CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.ABRUPT_CLOSING_INDEX, texts={modes.GENERAL:[["I understand if you don't feel like talking right now.", "You can always tell to me when you are ready."]]}, next_id=None)
 
-	bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, in_group_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Nice to meet you {name}. I hope we can help you when you need it."]]}, next_id=None)
-
+	
 	tmp_text = {}
 	tmp_text[modes.GENERAL] = [["Can you share with me more details about {problem}?"], ["Why is {problem} stressing you out?"]]
 	# tmp_text[topics.TRAFFIC] = [["Traffic can really suck.", "How bad is it out there today?"]]
@@ -295,7 +294,7 @@ def get_text_from_db():
 	#---------------------------------------------------------------------------------------------------------------------------------
 	## onboarding bot
 
-	bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, in_group_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi! I\'m Onboarding-Bot!", "I\'m here to introduce you to all my friends!", "We are here to help you with stress.", "Sounds good?"]]}, next_id=2)#next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 0)])
+	bot_texts[7][config.OPENNING_INDEX] = Reply(bot_id=7, in_group_id=config.OPENNING_INDEX, texts={modes.GENERAL:[["Hi! We\'re the Pop-Bots!", "We\'re here to introduce ourselves!", "We are here to help you with stress.", "Sounds good?"]]}, next_id=2)#next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 0)])
 	
 	tmp_text = [["I\'m here to give you a few pointers about how to interact with me and my friends.",  "First, we are only bots. We strive to do our best to understand you, and you will get more from us if you are able to give more than a yes or no answer to our questions. ", 
 				"We bots are also pretty new, which means that we are still learning.", "Right now it\'s important for us that you respond to each question in one message block.", "Feel free to hit return to add multiple paragraphs but only press send once you have expressed what you want to share. It\'s okay if you forget, we might just get a bit confused", 
@@ -306,8 +305,10 @@ def get_text_from_db():
 	bot_texts[7][0] = Reply(bot_id=7, in_group_id=0, texts={modes.GENERAL:tmp_text}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
 	del tmp_text
 	bot_texts[7][1] = Reply(bot_id=7, in_group_id=1, texts={modes.GENERAL:[["Please email our tech team. If you have any questions on the above. We would love to assist you. Ok?"]]}, next_id=2)
-	bot_texts[7][2] = Reply(bot_id=7, in_group_id=2, texts={modes.GENERAL:[["Awesome!", "May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[7][2] = Reply(bot_id=7, in_group_id=2, texts={modes.GENERAL:[["Awesome!", "May we have your name, please?"]]}, next_id=config.CLOSING_INDEX)
 	#bot_texts[7][3] = Reply(bot_id=7, in_group_id=3, texts={modes.GENERAL:[["May I have your name, please?"]]}, next_id=config.CLOSING_INDEX)
+
+	bot_texts[7][config.CLOSING_INDEX] = Reply(bot_id=7, in_group_id=config.CLOSING_INDEX, texts={modes.GENERAL:[["Nice to meet you {name}. We hope we can help you when you need us.", "Just say hi when you want to talk to us."]]}, next_id=None)
 
 
 	#---------------------------------------------------------------------------------------------------------------------------------

@@ -209,8 +209,12 @@ class StressBot(Client):
 				self.user_history[thread_id][-1].append((bot_id, next_id, ab_test_index))
 
 				reply_texts = []
+
+				if next_id == self.config.OPENNING_INDEX and (not self.voice_choice):
+					self.sendLocalImage('img/{}.png'.format(bot_id), thread_id=thread_id, thread_type=thread_type)
+
 				for each in next_texts[ab_test_index]:
-					reply_text = each.format(name=user_name, problem=problem, bot_name=self.params.bot_name_list[bot_id])
+					reply_text = each.format(name=user_name.capitalize(), problem=problem, bot_name=self.params.bot_name_list[bot_id])
 					reply_texts.append(reply_text)
 					self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
 					# if self.voice_choice:
