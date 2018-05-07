@@ -1,39 +1,29 @@
-**Welcome to chat with PopBots!**
+**Welcome to PopBots!**
+PopBots are a family of quick conversation bots that represent different “personalities” that a bot could take while supporting stress management. They share the same intro and closing, but they all treat stress differently. Our philosophy is that chatbots should look and act different than humans. This multiple-style approach could be a characteristics of modern therapeutic chatbots.
 
-PopBots are a family of quick three to 5 minutes conversation bots that represent different “personalities” that a bot could take while supporting stress management. They share the same intro and closing, but they all treat stress differently. Our philosophy is that chatbots should look and act different than humans. Multiple-styles could be a characteristics of modern therapeutic chatbots.
+**The family:**
+- **Doom bot **- while times may get tough, the tough get going!
+- **Sherlock bot**- looks for clues to brainstorm a solution
+- **Glass-half-full bot** - fills the cup full of positives about the situation
+- **Sir Laughs-a-bot** - adds a splash of humor to the problems you may face
+- **Chill bot** - visualize or breathe your way to chill
+- **Treat yourself bot** - sassy friend who tells you that it’s okay to treat yo self!
+- **Dunno bot** - what are you excited about? Dunno? This bot is all about the brainstorming
+- **Check-in bot** - checkity check yo self with this bot 
 
-# The family:
+The family of bots are named: **‘worst case’, ‘problem solving’, ‘positive thinking’, ‘humor’, ‘relaxation’, ‘self love’, ‘distraction’ and ‘check’**. We like to think of them as a family of 8(+1) dwarfs.
 
-- **doom bot** - helps in seeing that while times may get tough, everyone is 
+**How to start!?**
+To start talking with a bot, say hello in messenger and a bot will introduce themselves. They are friendly and trying their best, even if they sometimes get a bit confused.
 
-- **sherlock bot**- helps you to brainstorm a solution
+**Privacy**
+All the conversations with PopBots and user information (with authorization from user) is secured and well-protected. All records will remain anonymous so your name will never be associated with your data. 
 
-- **glass-half-full bot** - helps to brainstorm some positives about the situation
-
-- **Sir Laughs-a-bot** - helps to add a bit of humor to the problems you may face
-
-- **chill bot** - helps to do a visualization or breathing exercise
-
-- **treat yourself bot** - Is the sassy friend that helps you to know that you can offer yourself a hand
-
-- **dunno bot** - is a bot that helps you to brainstorm things that you are excited about in your life
-
-The family of bots are named: ‘**worst case’, ‘problem solving’, ‘positive thinking’, ‘humor’, ‘relaxation’, ‘self love’, ‘distraction’.** I like to think of them as a family of 7 dwarfs.
-
-# How to start!?
-
-To start talking with a bot, say hello and a bot will introduce themselves. They are friendly and trying their best, even if sometimes they can get a little bit confused.
-
-# Tips and tricks
-
-1. To change bots, type out the bot name as seen above under “family” , such as type 'positive thinking' and type 'hello' again to start conversation with glass-half-full bot.
-
-3. If you want a random bot, simply write 'changebot' and you will be given a random bot.
-
-5. If you want to restart a conversation, type 'restart'.
-
-7. If you have any questions or concerns, please email stressbotcommuter@gmail.com.
-
-9. If at any point you feel unsafe while chatting, please call 911. We understand that sometimes stress can be a lot, and chatbots are not meant to replace humans, but rather support people in different ways.
+**Tips and tricks**
+1. To change bots, type out the bot name as seen above under “family” , such as type ‘positive thinking’ and type ‘hello’ again to start a conversation with the ‘glass-half-full’ bot.
+2. To get a random bot, simply write ‘changebot' and you will be given a random bot.
+3. To restart a conversation, type 'restart'.
+4. Questions or concerns? please email stressbotcommuter@gmail.com
+5. If at any point you feel unsafe while chatting, please call 911. We understand that sometimes stress can be a lot, and chatbots are not meant to replace humans, but rather support people in different ways.
 
 Thank you very much.
