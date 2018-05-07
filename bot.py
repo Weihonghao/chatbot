@@ -155,8 +155,8 @@ class StressBot(Client):
 								self.user_name_dict[thread_id] = result
 
 
-				if current_id == self.config.OPENNING_INDEX and any(map(lambda x: x != -1, [msg.lower().find(each) for each in ['nothing', 'not now', 'don\'t know']])):
-					next_id = self.config.DK_INDEX
+				# if current_id == self.config.OPENNING_INDEX and any(map(lambda x: x != -1, [msg.lower().find(each) for each in ['nothing', 'not now', 'don\'t know']])):
+				# 	next_id = self.config.DK_INDEX
 
 				user_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
 				user_name = self.user_name_dict.get(thread_id, user_name)
