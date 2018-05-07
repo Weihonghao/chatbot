@@ -20,7 +20,7 @@ onboarding_id = 7
 relaxation_id = 4
 
 class StressBot(Client):
-	def __init__(self, email, password, reply_dict, voice_choice=False, **kwargs):
+	def __init__(self, email, password, reply_dict, **kwargs):
 		Client.__init__(self, email, password)
 		self.user_history = defaultdict(list)
 		# self.user_history {thread_id: [[(bot_id, in_group_id, ab_test_id, msg, user_response_time), () ....], [], [], ...]}
@@ -32,7 +32,7 @@ class StressBot(Client):
 		self.config = Config()
 
 		
-		self.voice_choice = voice_choice
+		self.voice_choice = False
 
 		additional_bot_control = kwargs.get('add_bot_ctl',{})
 		if 'sleeping_time' in additional_bot_control:
@@ -43,6 +43,8 @@ class StressBot(Client):
 
 		if 'mode' in additional_bot_control:
 			self.params.set_mode(additional_bot_control.get('mode', 'text'))
+			if self.params.MODE == Modes.VOICE:
+				self.voice_choice == True
 
 		if self.params.MODE == Modes.TEXT:
 			self.db = MongoClient().textbot
@@ -113,7 +115,10 @@ class StressBot(Client):
 										bot_id = onboarding_id
 									self.user_history[thread_id].append([(bot_id, self.config.START_INDEX, 0, ["START_OF_CONVERSATION"])])
 									if not self.voice_choice:
-										self.changeThreadColor(self.params.bot_color_list[self.user_history[thread_id][-1][-1][0]], thread_id=thread_id)
+										bot_id = self.user_history[thread_id][-1][-1][0]
+										self.changeThreadColor(self.params.bot_color_list[bot_id], thread_id=thread_id)
+										title_to_changed = self.params.bot_name_list[bot_id][:-4]
+										self.changeNickname(title_to_changed, self.uid, thread_id=thread_id, thread_type=thread_type)
 				bot_id, current_id, _, _ = self.user_history[thread_id][-1][-1]  # ab_id, questions
 				# self.user_history stores [(bot_id, current_id, ab_test, questions (list of texts), user_answer, timestamp)]
 				next_id = self.reply_dict[bot_id][current_id].next_id
@@ -208,11 +213,11 @@ class StressBot(Client):
 					reply_text = each.format(name=user_name, problem=problem, bot_name=self.params.bot_name_list[bot_id])
 					reply_texts.append(reply_text)
 					self.send(Message(text=reply_text), thread_id=thread_id, thread_type=thread_type)
-					if self.voice_choice:
-						#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
-						self.say(reply_text.replace("(", " ").replace(")", " "))
-					else:
-						time.sleep(self.params.SLEEPING_TIME)
+					# if self.voice_choice:
+					# 	#system('say -v Victoria ' + reply_text.replace("(", " ").replace(")", " "))#Alex
+					# 	self.say(reply_text.replace("(", " ").replace(")", " "))
+					# else:
+					time.sleep(self.params.SLEEPING_TIME)
 
 				self.user_history[thread_id][-1][-1] += (reply_texts,)
 
@@ -249,19 +254,16 @@ class StressBot(Client):
 
 
 if __name__ == "__main__":
-	usage_tips = 'python bot.py --voice --stime SLEEPINGTIME --mode MODE'
+	usage_tips = 'python bot.py --stime SLEEPINGTIME --mode MODE'
 	try:
-		opts, args = getopt.getopt(sys.argv[1:],'',["voice", 'stime=', 'bot=', 'mode='])
+		opts, args = getopt.getopt(sys.argv[1:],'',['stime=', 'bot=', 'mode='])
 	except getopt.GetoptError:
 		print usage_tips
 		sys.exit()
 
-	voice_choice = False
 	add_bot_ctl = {}
 	for opt, arg in opts:
-		if opt == '--voice':
-			voice_choice = True
-		elif opt == '--stime':
+		if opt == '--stime':
 			add_bot_ctl['sleeping_time'] = int(arg)
 		elif opt == '--bot':
 			add_bot_ctl['bot_choice'] = int(arg)
@@ -283,5 +285,5 @@ if __name__ == "__main__":
 	password = password_file.readline().strip()
 	print('email: {},  password: {}'.format(email, password))
 
-	client = StressBot(email, password, reply_dict, voice_choice, add_bot_ctl=add_bot_ctl)
+	client = StressBot(email, password, reply_dict, add_bot_ctl=add_bot_ctl)
 	client.listen()
