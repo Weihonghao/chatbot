@@ -190,7 +190,7 @@ def get_text_from_db():
 	bot_texts[2][0] = Reply(bot_id=2, in_group_id=0, texts=tmp_text, next_id=1)
 	del tmp_text
 
-	bot_texts[2][1] = Reply(bot_id=2, in_group_id=1, texts={modes.GENERAL:[["I see how that can be stressful.", "I want you to take a couple minutes and think about at least one positive aspect about your situation."], [":(, I\'m sorry.", "I want you to try something.", "Take a couple minutes and think about at least one positive aspect about your situation."]]}, next_id=2)
+	bot_texts[2][1] = Reply(bot_id=2, in_group_id=1, texts={modes.GENERAL:[["I see how that can be stressful.", "I want you to take a couple minutes and think about at least one positive aspect about your situation."], ["I\'m sorry.", "I want you to try something.", "Take a couple minutes and think about at least one positive aspect about your situation."]]}, next_id=2)
 	bot_texts[2][2] = Reply(bot_id=2, in_group_id=2, texts={modes.GENERAL:[["Good job finding a positive alternative!", "Is there another positive alternative you can find in your situation?"], ["Great!", "Do you think there is another positive alternative you can find in your situation?"]]}, next_id=[(config.DEFAULT_NO, 4), (config.DEFAULT_OTHERS, 3)])
 	bot_texts[2][3] = Reply(bot_id=2, in_group_id=3, texts={modes.GENERAL:[["Wonderful! See, you can usually find positives even when in the most negative of situations."], ["Awesome you\'re a great positive thinker!!"]]}, next_id=5)
 	bot_texts[2][4] = Reply(bot_id=2, in_group_id=4, texts={modes.GENERAL:[["That\'s ok! You found some positive to the situation"], ["That\'s alright you did find one positive which is really good."]]}, next_id=5)
