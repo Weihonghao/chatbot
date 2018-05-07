@@ -62,8 +62,8 @@ class StressBot(Client):
 			return self.user_history[thread_id].pop()
 
 	def delete_all_dict(self, thread_id, delete_name=False):
-		if thread_id in self.user_bot_dict:
-			del self.user_bot_dict[thread_id]
+		# if thread_id in self.user_bot_dict:
+		# 	del self.user_bot_dict[thread_id]
 		if thread_id in self.user_problem_dict:
 			del self.user_problem_dict[thread_id]
 		if delete_name and  thread_id in self.user_name_dict:
@@ -109,7 +109,9 @@ class StressBot(Client):
 									_bot_choice = self.user_bot_dict[thread_id] if thread_id in self.user_bot_dict else self.params.BOT_CHOICE
 									# bot_id = random.randint(0, self.params.BOT_NUM-1-1) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
 									bot_id = random.choice(range(0, relaxation_id) + range(relaxation_id+1, onboarding_id) + range(onboarding_id+1, self.params.BOT_NUM)) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
-									
+									self.user_bot_dict[thread_id] = (bot_id + 1) % self.params.BOT_NUM
+
+
 									query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
 									if self.db.user.find({'name': query_name}).count() == 0:
 										bot_id = onboarding_id
