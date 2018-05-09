@@ -137,7 +137,7 @@ class StressBot(Client):
 									_bot_choice = self.user_bot_dict[thread_id] if thread_id in self.user_bot_dict else self.params.BOT_CHOICE
 									# bot_id = random.randint(0, self.params.BOT_NUM-1-1) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
 									bot_id = random.choice(range(0, relaxation_id) + range(relaxation_id+1, onboarding_id) + range(onboarding_id+1, self.params.BOT_NUM)) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
-									next_bot_id = (bot_id + random.randint(0, self.params.BOT_NUM-1)) % self.params.BOT_NUM
+									next_bot_id = (bot_id + random.randint(1, self.params.BOT_NUM-1)) % self.params.BOT_NUM
 									if next_bot_id == onboarding_id:
 										next_bot_id += 1
 									while self.voice_choice and next_bot_id == relaxation_id:
