@@ -11,10 +11,10 @@ def get_text_from_db():
 	config = Config()
 	modes = Modes
 
-	openning = [["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "Can you tell me a little bit about a recent event that is making you stressed?"],
+	openning = [["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "Can you tell me about a recent situation that is stressing you out?"],
 				["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "What\'s stressing you out right now?"],
-				["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "What\'s on your mind?"],
-				["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "Could you share something that\'s on your mind?"]]
+				["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "What\'s on your mind that is stressing you out?"],
+				["Hi {name}, I\'m {bot_name}.", "I\'m here to help you deal with your stress.", "Could you share something that\'s on your mind that is stressing you out?"]]
 	closing = [["Thank you for sharing with me. I hope I\'ve been able to help.", "Have a nice day!"]]
 
 	dk_check_at_begining = [["Do you want me to come back later?"]]
@@ -28,7 +28,7 @@ def get_text_from_db():
 		# bot_texts[i][config.CONTINUE_INDEX] = Reply(bot_id=i, in_group_id=config.CONTINUE_INDEX, texts={modes.GENERAL:[["Please continue."]]}, next_id=config.ARE_YOU_DONE_INDEX)
 		bot_texts[i][config.CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.CLOSING_INDEX, texts={modes.GENERAL:closing}, next_id=None)
 		# bot_texts[i][config.DK_INDEX] = Reply(bot_id=i, in_group_id=config.DK_INDEX, texts={modes.GENERAL:dk_check_at_begining}, next_id=[(config.DEFAULT_DK, config.DK_INDEX), (config.DEFAULT_NO, config.CLOSING_INDEX), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
-		bot_texts[i][config.ABRUPT_CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.ABRUPT_CLOSING_INDEX, texts={modes.GENERAL:[["I understand if you don't feel like talking right now.", "You can always tell to me when you are ready.", "Talk to me when you need"]]}, next_id=None)
+		bot_texts[i][config.ABRUPT_CLOSING_INDEX] = Reply(bot_id=i, in_group_id=config.ABRUPT_CLOSING_INDEX, texts={modes.GENERAL:[["I understand if you don't feel like talking right now.", "We bots are always here to help when ever you feel like chatting with us!", "We hope you have a great day!"]]}, next_id=None)
 
 	
 	tmp_text = {}
@@ -162,7 +162,7 @@ def get_text_from_db():
 	del tmp_text
 
 
-	bot_texts[1][9] = Reply(bot_id=1, in_group_id=9, texts={modes.GENERAL:[["Great, I\'m glad you can do something about it.", "By breaking down a problem into tiny steps, we can often string together a solution"]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[1][9] = Reply(bot_id=1, in_group_id=9, texts={modes.GENERAL:[["Great, I\'m glad you can do something about it.", "By breaking down a problem into tiny steps, we can often string together a solution. Hope it helps you."]]}, next_id=config.CLOSING_INDEX)
 
 
 	tmp_text = {}
@@ -215,8 +215,8 @@ def get_text_from_db():
 	## Humor bot
 	bot_texts[3][0] = Reply(bot_id=3, in_group_id=0, texts={modes.GENERAL:[["Ok, tell me more detail about this situation."]]}, next_id=1)
 	bot_texts[3][1] = Reply(bot_id=3, in_group_id=1, texts={modes.GENERAL:[["Thank you for sharing.", "That does sound stressful.", "Ok, let\'s try looking at this situation in a different light.", "I want you to take a few minutes to come up with a joke about this situation", " Would you like an example?"]]}, next_id=[(config.DEFAULT_NO, 7), (config.DEFAULT_OTHERS, 2)])
-	bot_texts[3][7] = Reply(bot_id=3, in_group_id=7, texts={modes.GENERAL:[["Go for it!"]]}, next_id=3)
-	bot_texts[3][2] = Reply(bot_id=3, in_group_id=2, texts={modes.GENERAL:[["For example, if you are hungry, and you are stuck in traffic", "This might be a good joke.", "Why do French people eat snails?", "Because they don\'t like fast food.", "Don\'t worry about it being the best joke, just find something humorous about your situation.", "Can you please tell me your joke!"]]}, next_id=3)
+	bot_texts[3][7] = Reply(bot_id=3, in_group_id=7, texts={modes.GENERAL:[["Go for it!"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 3)])
+	bot_texts[3][2] = Reply(bot_id=3, in_group_id=2, texts={modes.GENERAL:[["For example, if you are hungry, and you are stuck in traffic", "This might be a good joke.", "Why do French people eat snails?", "Because they don\'t like fast food.", "Don\'t worry about it being the best joke, just find something humorous about your situation.", "Can you please tell me your joke!"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, 3)])
 	bot_texts[3][3] = Reply(bot_id=3, in_group_id=3, texts={modes.GENERAL:[["Haha that\'s true.", "Oftentimes finding the humor in stressful situations can help diffuse some tension."], ["Good joke!", "Sometimes there are good things that happen even if the situation isn\'t the best. "], ["Heehee! You\'re funny!", "Humor can be found in many situations"]]}, next_id=4)
 	bot_texts[3][4] = Reply(bot_id=3, in_group_id=4, texts={modes.GENERAL:[["Did that help you to find something good (or at least funny) about the situation?"]]}, next_id=[(config.DEFAULT_NO, 6), (config.DEFAULT_OTHERS, 5)])
 	bot_texts[3][5] = Reply(bot_id=3, in_group_id=5, texts={modes.GENERAL:[["I\'m glad. Would you consider trying this strategy, such as finding a joke, in the future?"]]}, next_id=config.CLOSING_INDEX)
@@ -314,10 +314,10 @@ def get_text_from_db():
 	#---------------------------------------------------------------------------------------------------------------------------------
 	## checkin bot
 
-	bot_texts[8][0] = Reply(bot_id=8, in_group_id=0, texts={modes.GENERAL:[["Hmm, that sounds pretty stressful.","I\'m not sure I can help you solve that probelm directly, but maybe we could check and see how it\'s affecting other aspects of your life.","Does that sound ok?"]]}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
+	bot_texts[8][0] = Reply(bot_id=8, in_group_id=0, texts={modes.GENERAL:[["Hmm, that sounds stressful.","I\'m not sure I can help you solve that probelm directly, but maybe we could check and see how it\'s affecting other aspects of your life.","Does that sound ok?"]]}, next_id=[(config.DEFAULT_NO, 1), (config.DEFAULT_OTHERS, 2)])
 
 	#can we pass off to a bot friend?
-	bot_texts[8][1] =  Reply(bot_id=8, in_group_id=1, texts={modes.GENERAL:[["Okay, maybe I can introduce you to my other bot-friends?"]]}, next_id=config.CLOSING_INDEX)
+	bot_texts[8][1] =  Reply(bot_id=8, in_group_id=1, texts={modes.GENERAL:[["Okay, maybe I can introduce you to my other bot-friends?"]]}, next_id=[(config.DEFAULT_NO, config.ABRUPT_CLOSING_INDEX), (config.DEFAULT_OTHERS, config.CLOSING_INDEX)])
 
 	bot_texts[8][2] = Reply(bot_id=8, in_group_id=2, texts={modes.GENERAL:[["Awesome, let\'s get started. Has this problem been affecting your sleep?"]]}, next_id=[(config.DEFAULT_NO, 3), (config.DEFAULT_OTHERS, 4)])
 

@@ -19,6 +19,16 @@ from gtts import gTTS
 onboarding_id = 7
 relaxation_id = 4
 
+timeout_seconds = 3600
+
+
+
+keyword_dict = {
+					Config().DEFAULT_YES:['yes', 'ok', 'sure', 'right', 'yea', 'ye', 'yup', 'yeah', 'okay'],
+					Config().DEFAULT_NO:['no', 'not',  'neither', 'neg', 'don\'t', 'doesn\'', 'donnot', 'dont', '\'t', 'nothing', 'nah', 'na'],
+					Config().DEFAULT_DK:["dk", "dunno", "dno", "don't know", "idk"]
+				}
+
 class StressBot(Client):
 	def __init__(self, email, password, reply_dict, **kwargs):
 		Client.__init__(self, email, password)
@@ -52,6 +62,10 @@ class StressBot(Client):
 			self.db = MongoClient().voicebot
 
 
+		self.start_now = {}
+		self.user_time = {}
+
+
 	def say(self, text):
 		tts = gTTS(text=text, lang='en')
 		tts.save("test.mp3")
@@ -81,6 +95,20 @@ class StressBot(Client):
 		if author_id != self.uid:
 
 			try:
+				if thread_id not in self.start_now:
+					self.start_now[thread_id] = True
+
+				if not self.start_now[thread_id]:
+					self.start_now[thread_id] = True
+					return None
+
+
+				if thread_id not in self.user_time:
+					self.user_time[thread_id] = time.time()
+
+				if (time.time() - self.user_time[thread_id])/timeout_seconds > 1 :
+					self.clean_last_record(thread_id)
+					self.delete_all_dict(thread_id)
 
 				msg = message_object.text.lower()
 				msg = ' '.join(msg.split()) # substitute multiple spaces into one
@@ -109,9 +137,11 @@ class StressBot(Client):
 									_bot_choice = self.user_bot_dict[thread_id] if thread_id in self.user_bot_dict else self.params.BOT_CHOICE
 									# bot_id = random.randint(0, self.params.BOT_NUM-1-1) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
 									bot_id = random.choice(range(0, relaxation_id) + range(relaxation_id+1, onboarding_id) + range(onboarding_id+1, self.params.BOT_NUM)) if _bot_choice == -1 else _bot_choice #onboarding should only happens at first time or when we want it
-									next_bot_id = (bot_id + 1) % self.params.BOT_NUM
+									next_bot_id = (bot_id + random.randint(0, self.params.BOT_NUM-1)) % self.params.BOT_NUM
 									if next_bot_id == onboarding_id:
 										next_bot_id += 1
+									while self.voice_choice and next_bot_id == relaxation_id:
+										next_bot_id = (bot_id + random.randint(1, self.params.BOT_NUM-1)) % self.params.BOT_NUM
 									self.user_bot_dict[thread_id] = next_bot_id
 
 									query_name = client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
@@ -125,6 +155,13 @@ class StressBot(Client):
 										self.changeNickname(title_to_changed, self.uid, thread_id=thread_id, thread_type=thread_type)
 				bot_id, current_id, _, _ = self.user_history[thread_id][-1][-1]  # ab_id, questions
 				# self.user_history stores [(bot_id, current_id, ab_test, questions (list of texts), user_answer, timestamp)]
+
+
+				if current_id == self.config.OPENNING_INDEX:
+					if  any([each in msg.lower() for each in keyword_dict[self.config.DEFAULT_YES]]) and len(msg.split(" ")) < 4:
+						self.send(Message(text="Please go on."), thread_id=thread_id, thread_type=thread_type)
+						return None
+
 				next_id = self.reply_dict[bot_id][current_id].next_id
 
 
@@ -153,7 +190,8 @@ class StressBot(Client):
 				if current_id == 2 and bot_id == onboarding_id:
 					self.user_name_dict[thread_id] = msg.lower().split()[0]
 
-				if current_id == self.config.START_INDEX or (current_id == 2 and bot_id == onboarding_id):
+				#if current_id == self.config.START_INDEX or (current_id == 2 and bot_id == onboarding_id):
+				if current_id == 2 and bot_id == onboarding_id:
 					for each in ['i am', 'i\'m', 'this is', 'name is']:
 						_index = msg.lower().find(each)
 						if _index != -1:
@@ -180,11 +218,7 @@ class StressBot(Client):
 				}
 
 
-				keyword_dict = {
-					self.config.DEFAULT_YES:['yes', 'ok', 'sure', 'right', 'yea', 'ye', 'yup', 'yeah'],
-					self.config.DEFAULT_NO:['no', 'not',  'neither', 'neg', 'don\'t', 'doesn\'', 'donnot', 'dont', '\'t', 'nothing', 'nah'],
-					self.config.DEFAULT_DK:["dk", "dunno", "dno", "don't know", "idk"]
-				}
+				
 
 				if type(next_id) == list and len(next_id) > 0:
 					if type(next_id[0][0]) == tuple:
@@ -194,8 +228,10 @@ class StressBot(Client):
 								break
 					elif type(next_id[0][0]) == str:
 						for (key, val) in next_id:
-							#print(msg, keyword_dict.get(key, [val]))
+							#print(msg, keyword_dict.get(key, [val]))	
 						 	if decider_dict.get(key, find_keyword)(str(msg).lower(), keyword_dict.get(key, [key])):
+						 		if key == self.config.DEFAULT_NO and (len(msg.split(" ")) > 5 or len(msg) > 25):
+						 			continue
 						 		next_id = val
 						 		break
 					else:
@@ -214,8 +250,8 @@ class StressBot(Client):
 
 				reply_texts = []
 
-				# if next_id == self.config.OPENNING_INDEX and (not self.voice_choice):
-				# 	self.sendLocalImage('img/{}.png'.format(bot_id), thread_id=thread_id, thread_type=thread_type)
+				if next_id == self.config.OPENNING_INDEX and (not self.voice_choice):
+					self.sendLocalImage('img/{}.png'.format(bot_id), thread_id=thread_id, thread_type=thread_type)
 
 				for each in next_texts[ab_test_index]:
 					reply_text = each.format(name=user_name.capitalize(), problem=problem, bot_name=self.params.bot_name_list[bot_id])
@@ -255,6 +291,7 @@ class StressBot(Client):
 					#client.fetchUserInfo(thread_id)[thread_id].name.split(" ")[0]
 
 					self.delete_all_dict(thread_id)
+					self.start_now[thread_id] = False
 			except:
 				pass
 
