@@ -29,6 +29,8 @@ keyword_dict = {
 					Config().DEFAULT_DK:["dk", "dunno", "dno", "don't know", "idk"]
 				}
 
+greeting_list = ['hi','hey', 'hello']
+
 class StressBot(Client):
 	def __init__(self, email, password, reply_dict, **kwargs):
 		Client.__init__(self, email, password)
@@ -124,6 +126,11 @@ class StressBot(Client):
 				# 		time.sleep(self.params.SLEEPING_TIME)
 				# 	return None
 
+				if msg.strip().lower() in greeting_list:
+					self.clean_last_record(thread_id)
+					self.delete_all_dict(thread_id)
+
+
 				if msg.strip().lower() == 'restart':
 					self.clean_last_record(thread_id)
 					self.delete_all_dict(thread_id)
@@ -159,14 +166,16 @@ class StressBot(Client):
 
 				if current_id == self.config.OPENNING_INDEX:
 					if  any([each in msg.lower() for each in keyword_dict[self.config.DEFAULT_YES]]) and len(msg.split(" ")) < 4:
-						self.send(Message(text="Please go on."), thread_id=thread_id, thread_type=thread_type)
-						return None
+						if bot_id != onboarding_id:
+							self.send(Message(text="Please go on."), thread_id=thread_id, thread_type=thread_type)
+							return None
 
 				next_id = self.reply_dict[bot_id][current_id].next_id
 
 
-				if current_id == self.config.OPENNING_INDEX and  find_problem(msg) != None:
-					self.user_problem_dict[thread_id] = find_problem(msg)
+				if bot_id != onboarding_id:
+					if current_id == self.config.OPENNING_INDEX and  find_problem(msg) != None:
+						self.user_problem_dict[thread_id] = find_problem(msg)
 				problem = self.user_problem_dict.get(thread_id, 'that')
 
 				#if msg.strip().lower() == 'change bot' or msg.strip().lower() in self.params.bot_tech_name_list:
@@ -262,6 +271,8 @@ class StressBot(Client):
 					# 	self.say(reply_text.replace("(", " ").replace(")", " "))
 					# else:
 					time.sleep(self.params.SLEEPING_TIME)
+
+				self.user_time[thread_id] = time.time()
 
 				self.user_history[thread_id][-1][-1] += (reply_texts,)
 
