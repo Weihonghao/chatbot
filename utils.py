@@ -49,6 +49,7 @@ class Config:
 		self.ARE_YOU_DONE_INDEX = -5
 		self.CONTINUE_INDEX = -6
 		self.ABRUPT_CLOSING_INDEX = -7
+		self.QUESTION_INDEX = -8
 
 
 		self.DEFAULT_YES = "__YES__"

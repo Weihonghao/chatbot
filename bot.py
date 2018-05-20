@@ -85,6 +85,11 @@ class StressBot(Client):
 		if delete_name and  thread_id in self.user_name_dict:
 			del self.user_name_dict[thread_id]
 
+	def onFriendRequest(self, from_id=None, msg=None):
+		# self.send(Message(text='who are you'), thread_id=from_id)
+		log.info("Friend request from {}".format(from_id))
+
+
 	def onMessage(self, author_id, message_object, thread_id, thread_type, **kwargs):
 		user_response_time = time.time()
 		# import datetime
